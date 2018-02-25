@@ -6,10 +6,15 @@ defmodule SalvadanaioWeb.Api.V1.AccountsView do
   end
 
   def render("show.json", %{account: account}) do
-    %{data: render_one(account, __MODULE__, "account.json")}
+    %{data: render_one(account, __MODULE__, "account.json", as: :account)}
   end
 
   def render("account.json", %{account: account}) do
-    %{id: account.id, name: account.name}
+    %{
+      id: account.id,
+      name: account.name,
+      balance: account.balance,
+      balance_update_date: account.balance_update_date,
+    }
   end
 end

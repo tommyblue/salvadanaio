@@ -3,6 +3,7 @@ defmodule Salvadanaio.Movement do
   import Ecto.Changeset
   alias Salvadanaio.Movement
   alias Salvadanaio.Account
+  alias Salvadanaio.Repo
 
   schema "movements" do
     belongs_to :account, Account
@@ -17,7 +18,7 @@ defmodule Salvadanaio.Movement do
   @doc false
   def changeset(%Movement{} = movement, attrs) do
     movement
-    |> cast(attrs, [:account, :operation_date, :value_date, :amount, :short_description, :description])
-    |> validate_required([:account, :operation_date, :amount, :short_description])
+    |> cast(attrs, [:account_id, :operation_date, :value_date, :amount, :short_description, :description])
+    |> validate_required([:account_id, :operation_date, :amount, :short_description])
   end
 end
