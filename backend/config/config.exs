@@ -22,6 +22,15 @@ config :logger, :console,
   format: "$time $metadata[$level] $message\n",
   metadata: [:request_id]
 
+# Money
+config :money,
+  default_currency: :EUR,
+  separator: ".",
+  delimeter: ",",
+  symbol: false,
+  symbol_on_right: false,
+  symbol_space: false
+
 # Import environment specific config. This must remain at the bottom
 # of this file so it overrides the configuration defined above.
 import_config "#{Mix.env}.exs"
