@@ -1,4 +1,6 @@
 import React from 'react';
+import {Link} from 'react-router-dom';
+
 const logo = require('../images/logo.png');
 
 export default class extends React.Component {
@@ -11,8 +13,8 @@ export default class extends React.Component {
                     </div>
                     <div className="navbar-menu">
                         <div className="navbar-start">
-                            <a className="navbar-item">Accounts</a>
-                            <a className="navbar-item">Movements</a>
+                            <Link to="/accounts" className="navbar-item">Accounts</Link>
+                            <Link to="/movements" className="navbar-item">Movements</Link>
                         </div>
                     </div>
                 </div>
