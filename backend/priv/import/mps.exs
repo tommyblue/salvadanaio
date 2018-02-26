@@ -1,9 +1,7 @@
-defmodule FinecoImport do
+defmodule MpsImport do
   @moduledoc """
-  This module creates movements for a Fineco account, reading them from the XLSX file exported
-  from the Fineco movements web page.
-  The original exported file is a XLS file, which must be converted to XSLX before running this
-  script.
+  This module creates movements for a MPS account, reading them from the XLSX file exported
+  from the MPS movements web page.
   The module looks for the Account or creates it if not found.
   """
 
@@ -11,7 +9,7 @@ defmodule FinecoImport do
   alias Salvadanaio.Repo
 
   # After this line in the XLSX file, the movements begin
-  @id_line ["Data Operazione", "Data Valuta", "Entrate", "Uscite", "Descrizione", "Descrizione Completa"]
+  @id_line [nil, "DATA CONT.", "DATA VAL.", "CAUSALE", "DESCRIZIONE", "", "IMPORTO(€)"]
 
   def run(filepath) do
     case Xlsxir.multi_extract(filepath, 0) do
@@ -23,22 +21,14 @@ defmodule FinecoImport do
   end
 
   def help() do
-    IO.puts("Usage: mix run priv/import/fineco.exs <XLSX file>")
+    IO.puts("Usage: mix run priv/import/mps.exs <XLSX file>")
   end
 
   defp parse_rows([head | tail]) do
-    [first_element | _] = head
-    if first_element != nil do
-      case Regex.named_captures(~r/Saldo EUR al (?<date>\d+\/\d+\/\d+): (?<balance>\d+\.\d+)/iu, first_element) do
-        %{"balance" => balance, "date" => date} ->
-          {balance, ""} = Float.parse(balance)
-          date = parse_date(date)
-          get_account_id(balance, date)
-        _ -> nil
-      end
-    end
-
     case head do
+      [nil, "Saldo Iniziale (€)", nil, balance, "", nil, nil] ->
+        get_account_id(balance)
+        parse_rows(tail)
       @id_line -> print_values(tail, get_account_id())
       _ -> parse_rows(tail)
     end
@@ -57,27 +47,17 @@ defmodule FinecoImport do
 
   defp insert_movement(row, account_id) do
     case row do
-      [operation_date, value_date, income, "", short_description, description] ->
+      [nil, operation_date, value_date, short_description, description, "", amount] ->
         movement_attrs = %Salvadanaio.Movement{
           account_id: account_id,
-          operation_date: parse_date(operation_date),
-          value_date: parse_date(value_date),
-          amount: Money.new(Kernel.trunc(Kernel.round(income*100)), :EUR),
+          operation_date: Date.from_erl!(operation_date),
+          value_date: Date.from_erl!(value_date),
+          amount: Money.new(Kernel.trunc(Kernel.round(amount*100)), :EUR),
           short_description: short_description,
           description: description
         }
         add_movement(movement_attrs)
-
-      [operation_date, value_date, "", outcome, short_description, description] ->
-        movement_attrs = %Salvadanaio.Movement{
-          account_id: account_id,
-          operation_date: parse_date(operation_date),
-          value_date: parse_date(value_date),
-          amount: Money.new(Kernel.trunc(Kernel.round(-outcome*100)), :EUR),
-          short_description: short_description,
-          description: description
-        }
-        add_movement(movement_attrs)
+      _ -> nil
     end
   end
 
@@ -87,7 +67,7 @@ defmodule FinecoImport do
 
   defp get_account_id(initial_balance \\ 0, balance_date \\ Date.utc_today()) do
     # find account or create it
-    case Repo.get_by(Account, name: "Fineco") do
+    case Repo.get_by(Account, name: "MPS") do
       nil -> create_account(initial_balance, balance_date)
       account -> account.id
     end
@@ -95,7 +75,7 @@ defmodule FinecoImport do
 
   defp create_account(initial_balance, balance_date) do
     Salvadanaio.Repo.insert!(%Salvadanaio.Account{
-      name: "Fineco",
+      name: "MPS",
       balance: Money.new(Kernel.trunc(initial_balance*100), :EUR),
       balance_update_date: balance_date
     }).id
@@ -115,7 +95,7 @@ end
 parsed = OptionParser.parse(System.argv)
 
 case parsed do
-	# {[verbose: true], [filepath], _} -> FinecoImport.run_verbose(filepath)
-	{_, [filepath], _} -> FinecoImport.run(filepath)
-	_ -> FinecoImport.help
+	# {[verbose: true], [filepath], _} -> MpsImport.run_verbose(filepath)
+	{_, [filepath], _} -> MpsImport.run(filepath)
+	_ -> MpsImport.help
 end
