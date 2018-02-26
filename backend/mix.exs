@@ -20,7 +20,7 @@ defmodule Salvadanaio.Mixfile do
   def application do
     [
       mod: {Salvadanaio.Application, []},
-      extra_applications: [:logger, :runtime_tools]
+      extra_applications: [:logger, :runtime_tools, :xlsxir]
     ]
   end
 
@@ -39,7 +39,8 @@ defmodule Salvadanaio.Mixfile do
       {:postgrex, ">= 0.0.0"},
       {:gettext, "~> 0.11"},
       {:cowboy, "~> 1.0"},
-      {:money, "~> 1.2.1"}
+      {:money, "~> 1.2.1"},
+      {:xlsxir, github: "jsonkenl/xlsxir"}
     ]
   end
 
