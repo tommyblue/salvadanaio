@@ -11,13 +11,12 @@ defmodule FinecoImport do
   alias Salvadanaio.Repo
 
   @id_line ["Data Operazione", "Data Valuta", "Entrate", "Uscite", "Descrizione", "Descrizione Completa"]
-  @account_id 0
 
   def run(filepath) do
     IO.puts("Run #{filepath}")
 
     case Xlsxir.multi_extract(filepath, 0) do
-      {:ok, xls} -> parse_rows(Xlsxir.get_list(xls), get_account_id())
+      {:ok, xls} -> parse_rows(Xlsxir.get_list(xls))
       {:error, reason} ->
         IO.puts(reason)
         exit(1)
@@ -28,14 +27,25 @@ defmodule FinecoImport do
     IO.puts("Usage: mix run priv/import/fineco.exs <XLSX file>")
   end
 
-  defp parse_rows([head | tail], account_id) do
+  defp parse_rows([head | tail]) do
+    [first_element | _] = head
+    if first_element != nil do
+      case Regex.named_captures(~r/Saldo EUR al (?<date>\d+\/\d+\/\d+): (?<balance>\d+\.\d+)/iu, first_element) do
+        %{"balance" => balance, "date" => date} ->
+          {balance, ""} = Float.parse(balance)
+          date = parse_date(date)
+          get_account_id(balance, date)
+        _ -> nil
+      end
+    end
+
     case head do
-      @id_line -> print_values(tail, account_id)
-      _ -> parse_rows(tail, account_id)
+      @id_line -> print_values(tail, get_account_id())
+      _ -> parse_rows(tail)
     end
   end
 
-  defp parse_rows([], account_id) do
+  defp parse_rows([]) do
   end
 
   defp print_values([head | tail], account_id) do
@@ -43,7 +53,7 @@ defmodule FinecoImport do
     print_values(tail, account_id)
   end
 
-  defp print_values([], account_id) do
+  defp print_values([], _) do
   end
 
   defp insert_movement(row, account_id) do
@@ -53,7 +63,7 @@ defmodule FinecoImport do
           account_id: account_id,
           operation_date: parse_date(operation_date),
           value_date: parse_date(value_date),
-          amount: Money.new(Kernel.trunc(income*100), :EUR),
+          amount: Money.new(Kernel.trunc(Kernel.round(income*100)), :EUR),
           short_description: short_description,
           description: description
         }
@@ -64,7 +74,7 @@ defmodule FinecoImport do
           account_id: account_id,
           operation_date: parse_date(operation_date),
           value_date: parse_date(value_date),
-          amount: Money.new(Kernel.trunc(-outcome*100), :EUR),
+          amount: Money.new(Kernel.trunc(Kernel.round(-outcome*100)), :EUR),
           short_description: short_description,
           description: description
         }
@@ -76,16 +86,20 @@ defmodule FinecoImport do
     Salvadanaio.Services.Movements.insert_movement(movement_attrs)
   end
 
-  defp get_account_id() do
+  defp get_account_id(initial_balance \\ 0, balance_date \\ Date.utc_today()) do
     # find account or create it
     case Repo.get_by(Account, name: "Fineco") do
-      nil -> Salvadanaio.Repo.insert!(%Salvadanaio.Account{
-        name: "Fineco",
-        balance: Money.new(0, :EUR),
-        balance_update_date: Date.utc_today()
-      }).id
+      nil -> create_account(initial_balance, balance_date)
       account -> account.id
     end
+  end
+
+  defp create_account(initial_balance, balance_date) do
+    Salvadanaio.Repo.insert!(%Salvadanaio.Account{
+      name: "Fineco",
+      balance: Money.new(Kernel.trunc(initial_balance*100), :EUR),
+      balance_update_date: balance_date
+    }).id
   end
 
   # Accepts a date as string in the format DD/MM/YYYY and returns a Date.
