@@ -1,4 +1,12 @@
 defmodule FinecoImport do
+  @moduledoc """
+  This module creates movements for a Fineco account, reading them from the XLSX file exported
+  from the Fineco movements web page.
+  The original exported file is a XLS file, which must be converted to XSLX before running this
+  script.
+  The module looks for the Account or creates it if not found.
+  """
+
   alias Salvadanaio.Account
   alias Salvadanaio.Repo
 
@@ -17,7 +25,7 @@ defmodule FinecoImport do
   end
 
   def help() do
-    IO.puts("Usage: mix run priv/import/fineco.exs <XLS file>")
+    IO.puts("Usage: mix run priv/import/fineco.exs <XLSX file>")
   end
 
   defp parse_rows([head | tail], account_id) do
@@ -69,7 +77,7 @@ defmodule FinecoImport do
   end
 
   defp get_account_id() do
-    # find account
+    # find account or create it
     case Repo.get_by(Account, name: "Fineco") do
       nil -> Salvadanaio.Repo.insert!(%Salvadanaio.Account{
         name: "Fineco",
