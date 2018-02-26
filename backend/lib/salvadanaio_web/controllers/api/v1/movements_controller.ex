@@ -4,9 +4,23 @@ defmodule SalvadanaioWeb.Api.V1.MovementsController do
   alias Salvadanaio.Movement
   alias SalvadanaioWeb.Api.V1.ChangesetView
   alias Ecto.Multi
+  import Ecto.Query, only: [from: 2]
 
-  def index(conn, _params) do
-    movements = Repo.all(Movement) |> Repo.preload(:account)
+  def index(conn, params) do
+    query = from(m in Movement, [])
+    query = case Map.get(params, "account_id") do
+      nil -> query
+      account_id -> from(m in query, where: m.account_id == ^account_id)
+    end
+    query = case Map.get(params, "from_date") do
+      nil -> query
+      from_date -> from(m in query, where: m.operation_date >= ^Date.from_iso8601!(from_date))
+    end
+    query = case Map.get(params, "to_date") do
+      nil -> query
+      to_date -> from(m in query, where: m.operation_date <= ^Date.from_iso8601!(to_date))
+    end
+    movements = Repo.all(query) |> Repo.preload(:account)
     render conn, "index.json", movements: movements
   end
 
@@ -15,7 +29,7 @@ defmodule SalvadanaioWeb.Api.V1.MovementsController do
     render conn, "show.json", movement: movement
   end
 
-  def create(conn, movement_params = %{"account_id" => account_id}) do
+  def create(conn, movement_params) do
     movement_params = monetize_amount(movement_params)
     changeset = Movement.changeset(%Movement{}, movement_params)
 
