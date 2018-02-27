@@ -36,6 +36,8 @@ defmodule SalvadanaioWeb.Endpoint do
     key: "_salvadanaio_key",
     signing_salt: "YzFGtG+i"
 
+  plug CORSPlug
+
   plug SalvadanaioWeb.Router
 
   @doc """
