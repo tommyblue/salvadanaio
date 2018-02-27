@@ -2,24 +2,20 @@ import React from 'react';
 import { connect } from 'react-redux';
 import _ from 'lodash';
 
-import {clickAccount, loadAccounts} from '../actions';
+import {loadAccounts} from '../actions';
 import {formatMoney, formatISODate} from '../utils';
 import LoadingSpinner from '../components/LoadingSpinner';
 
 const mapStateToProps = state => {
     return {
         accounts: state.accounts,
-        clickedAccount: state.clickedAccount,
     };
 };
 
 const mapDispatchToProps = dispatch => {
     return {
-        onClickAccount: id => {
-            dispatch(clickAccount(id))
-        },
-        loadAccounts: id => {
-            dispatch(loadAccounts(id))
+        loadAccounts: () => {
+            dispatch(loadAccounts())
         }
     }
 };
@@ -64,6 +60,7 @@ class Accounts extends React.Component {
         );
     }
 }
+
 export default connect(
     mapStateToProps,
     mapDispatchToProps
