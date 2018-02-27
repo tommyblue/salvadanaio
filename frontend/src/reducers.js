@@ -1,8 +1,14 @@
-import {LOADED_ACCOUNT, LOADED_MOVEMENT, ERROR_HAPPENED} from './actions';
+import {
+    ERROR_HAPPENED,
+    LOADED_ACCOUNT,
+    LOADED_MOVEMENT,
+    SELECT_ACCOUNT,
+} from './actions';
 
 const initialState = {
     accounts: [],
     movements: [],
+    selectedAccount: 0,
 };
 
 const mainReducer = (state = initialState, action) => {
@@ -11,6 +17,10 @@ const mainReducer = (state = initialState, action) => {
         case LOADED_ACCOUNT:
             return ({...state,
                 accounts: action.accounts
+            });
+        case SELECT_ACCOUNT:
+            return ({...state,
+                selectedAccount: action.account_id
             });
         // MOVEMENTS
         case LOADED_MOVEMENT:

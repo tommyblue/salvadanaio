@@ -2,32 +2,49 @@ import React from 'react';
 import { connect } from 'react-redux';
 import _ from 'lodash';
 
-import {loadMovements} from '../actions';
+import {loadMovements, loadAccounts, selectAccount} from '../actions';
 import {formatMoney, formatISODate} from '../utils';
+import AccountSelector from '../components/AccountSelector';
 import LoadingSpinner from '../components/LoadingSpinner';
 
 const mapStateToProps = state => {
     return {
+        accounts: state.accounts,
         movements: state.movements,
+        selectedAccount: state.selectedAccount,
     };
 };
 
 const mapDispatchToProps = dispatch => {
     return {
-        loadMovements: () => {
-            dispatch(loadMovements())
-        }
+        onLoadMovements: (account_id) => dispatch(loadMovements(account_id)),
+        onLoadAccounts: () => dispatch(loadAccounts()),
+        onSelectAccount: (account_id) => dispatch(selectAccount(account_id)),
     }
 };
 class Movements extends React.Component {
     componentDidMount() {
-        this.props.loadMovements();
+        this.props.onLoadAccounts();
+        if (this.props.selectedAccount) {
+            this.props.onLoadMovements(this.props.selectedAccount);
+        }
+    }
+
+    componentWillReceiveProps(nextProps) {
+        if (this.props.selectedAccount !== nextProps.selectedAccount) {
+            this.props.onLoadMovements(nextProps.selectedAccount);
+        }
     }
 
     render() {
         return (
             <div className="container">
                 <h1 className="title">Movements</h1>
+                <AccountSelector
+                    accounts={this.props.accounts}
+                    selectedAccount={this.props.selectedAccount}
+                    onSelectAccount={this.props.onSelectAccount}
+                />
                 {this.movementsTable()}
             </div>
         );

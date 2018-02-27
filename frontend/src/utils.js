@@ -6,7 +6,7 @@ const currency2symbol = {
 };
 
 export const formatMoney = (money) => {
-    return `${money.amount / 100} ${currency2symbol[money.currency]}`;
+    return `${(money.amount / 100).toFixed(2)} ${currency2symbol[money.currency]}`;
 };
 
 export const formatISODate = (date) => {
