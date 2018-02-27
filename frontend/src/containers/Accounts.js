@@ -1,7 +1,10 @@
 import React from 'react';
 import { connect } from 'react-redux';
+import _ from 'lodash';
 
-import {clickAccount} from '../actions';
+import {clickAccount, loadAccounts} from '../actions';
+import {formatMoney, formatISODate} from '../utils';
+import LoadingSpinner from '../components/LoadingSpinner';
 
 const mapStateToProps = state => {
     return {
@@ -14,18 +17,50 @@ const mapDispatchToProps = dispatch => {
     return {
         onClickAccount: id => {
             dispatch(clickAccount(id))
+        },
+        loadAccounts: id => {
+            dispatch(loadAccounts(id))
         }
     }
 };
 
 class Accounts extends React.Component {
+    componentDidMount() {
+        this.props.loadAccounts();
+    }
+
     render() {
-        console.log(this.props.clickedAccount);
         return (
             <div className="container">
-                <h1>Accounts</h1>
-                <a onClick={this.props.onClickAccount.bind(this, this.props.clickedAccount+1)}>Click</a>
+                <h1 className="title">Accounts</h1>
+                {this.accountsTable()}
             </div>
+        );
+    }
+
+    accountsTable() {
+        if (_.isEmpty(this.props.accounts)) {
+            return (<LoadingSpinner />);
+        }
+        return (
+            <table className="table is-bordered is-striped is-fullwidth">
+                <thead>
+                    <tr>
+                        <th>Account name</th>
+                        <th>Balance</th>
+                        <th>Last balance update</th>
+                    </tr>
+                </thead>
+                <tbody>
+                {_.map(this.props.accounts, (a) => (
+                    <tr key={`account_${a.id}`}>
+                        <td>{a.name}</td>
+                        <td>{formatMoney(a.balance)}</td>
+                        <td>{formatISODate(a.balance_update_date)}</td>
+                    </tr>
+                ))}
+                </tbody>
+            </table>
         );
     }
 }

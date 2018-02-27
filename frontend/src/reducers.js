@@ -1,19 +1,27 @@
-import {CLICKED_ACCOUNT} from './actions';
+import {CLICKED_ACCOUNT, LOADED_ACCOUNT, ERROR_HAPPENED} from './actions';
 
 const initialState = {
-    accounts: [1, 2, 3],
+    accounts: [],
     clickedAccount: null
 };
 
-const salvadanaioApp = (state = initialState, action) => {
+const mainReducer = (state = initialState, action) => {
     switch (action.type) {
         case CLICKED_ACCOUNT:
             return ({...state,
                 clickedAccount: action.account_id
+            });
+        case LOADED_ACCOUNT:
+            return ({...state,
+                accounts: action.accounts
+            });
+        case ERROR_HAPPENED:
+            return ({...state,
+                errors: action.errors
             });
         default:
             return state
     }
 };
 
-export default salvadanaioApp;
+export default mainReducer;
