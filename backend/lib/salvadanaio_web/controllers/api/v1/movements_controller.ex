@@ -20,6 +20,12 @@ defmodule SalvadanaioWeb.Api.V1.MovementsController do
       nil -> query
       to_date -> from(m in query, where: m.operation_date <= ^Date.from_iso8601!(to_date))
     end
+    query = case Map.get(params, "date_range") do
+      nil -> query
+      date_range ->
+        {date_range, ""} = Integer.parse(date_range)
+        from(m in query, where: m.operation_date >= ^Date.add(Date.utc_today, -date_range))
+    end
     movements = Repo.all(query) |> Repo.preload(:account)
     render conn, "index.json", movements: movements
   end
