@@ -3,12 +3,14 @@ import {
     LOADED_ACCOUNT,
     LOADED_MOVEMENT,
     SELECT_ACCOUNT,
+    SELECT_DATERANGE,
 } from './actions';
 
 const initialState = {
     accounts: [],
     movements: [],
     selectedAccount: 0,
+    selectedDateRange: 30,
 };
 
 const mainReducer = (state = initialState, action) => {
@@ -28,6 +30,10 @@ const mainReducer = (state = initialState, action) => {
                 movements: action.movements
             });
         // GENERIC
+        case SELECT_DATERANGE:
+            return ({...state,
+                selectedDateRange: action.dateRange
+            });
         case ERROR_HAPPENED:
             return ({...state,
                 errors: action.errors

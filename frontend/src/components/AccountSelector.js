@@ -11,7 +11,7 @@ export default class extends React.Component {
     render() {
         const { accounts, selectedAccount, onSelectAccount } = this.props;
         return (
-            <div className="select">
+            <div className="select is-left">
                 <select value={selectedAccount} onChange={(e) => (onSelectAccount(e.target.value))}>
                     {_.map(accounts, (a) => (
                         <option key={a.id} value={a.id}>{a.name}</option>

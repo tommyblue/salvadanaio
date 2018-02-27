@@ -10,5 +10,5 @@ export const formatMoney = (money) => {
 };
 
 export const formatISODate = (date) => {
-    return moment(date).format("23/05/2018");
+    return moment(date).format("DD/MM/YYYY");
 };

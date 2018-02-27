@@ -2,9 +2,10 @@ import React from 'react';
 import { connect } from 'react-redux';
 import _ from 'lodash';
 
-import {loadMovements, loadAccounts, selectAccount} from '../actions';
+import {loadMovements, loadAccounts, selectAccount, selectDateRange} from '../actions';
 import {formatMoney, formatISODate} from '../utils';
 import AccountSelector from '../components/AccountSelector';
+import DateRangeSelector from '../components/DateRangeSelector';
 import LoadingSpinner from '../components/LoadingSpinner';
 
 const mapStateToProps = state => {
@@ -12,6 +13,7 @@ const mapStateToProps = state => {
         accounts: state.accounts,
         movements: state.movements,
         selectedAccount: state.selectedAccount,
+        selectedDateRange: state.selectedDateRange,
     };
 };
 
@@ -20,19 +22,26 @@ const mapDispatchToProps = dispatch => {
         onLoadMovements: (account_id) => dispatch(loadMovements(account_id)),
         onLoadAccounts: () => dispatch(loadAccounts()),
         onSelectAccount: (account_id) => dispatch(selectAccount(account_id)),
+        onSelectDateRange: (dateRange) => dispatch(selectDateRange(dateRange)),
     }
 };
 class Movements extends React.Component {
     componentDidMount() {
         this.props.onLoadAccounts();
         if (this.props.selectedAccount) {
-            this.props.onLoadMovements(this.props.selectedAccount);
+            this.props.onLoadMovements({
+                accountId: this.props.selectedAccount,
+                dateRange: this.props.selectedDateRange,
+            });
         }
     }
 
     componentWillReceiveProps(nextProps) {
-        if (this.props.selectedAccount !== nextProps.selectedAccount) {
-            this.props.onLoadMovements(nextProps.selectedAccount);
+        if (this.props.selectedAccount !== nextProps.selectedAccount || this.props.selectedDateRange !== nextProps.selectedDateRange) {
+            this.props.onLoadMovements({
+                accountId: nextProps.selectedAccount,
+                dateRange: nextProps.selectedDateRange
+            });
         }
     }
 
@@ -44,6 +53,10 @@ class Movements extends React.Component {
                     accounts={this.props.accounts}
                     selectedAccount={this.props.selectedAccount}
                     onSelectAccount={this.props.onSelectAccount}
+                />
+                <DateRangeSelector
+                    selectedDateRange={this.props.selectedDateRange}
+                    onSelectDateRange={this.props.onSelectDateRange}
                 />
                 {this.movementsTable()}
             </div>

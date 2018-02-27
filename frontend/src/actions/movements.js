@@ -2,9 +2,9 @@ import {fetchResource, errorOnFetch} from './fetch';
 
 export const LOADED_MOVEMENT = "LOADED_MOVEMENT";
 
-export const loadMovements = (account_id) => {
+export const loadMovements = (params) => {
     return function (dispatch) {
-        return fetchResource(`movements?account_id=${account_id}`).then(
+        return fetchResource(`movements?account_id=${params.accountId}&date_range=${params.dateRange}`).then(
             response => dispatch(loadedMovements(response.data)),
             error => dispatch(errorOnFetch(error))
         );
