@@ -18,6 +18,7 @@ defmodule Salvadanaio.Account do
     account
     |> cast(attrs, [:name, :balance, :balance_update_date])
     |> validate_required([:name])
+    |> unique_constraint(:name)
   end
 
   def update_balance(account_id, amount) do

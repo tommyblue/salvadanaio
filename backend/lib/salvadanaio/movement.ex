@@ -3,10 +3,12 @@ defmodule Salvadanaio.Movement do
   import Ecto.Changeset
   alias Salvadanaio.Movement
   alias Salvadanaio.Account
+  alias Salvadanaio.Category
   alias Salvadanaio.Repo
 
   schema "movements" do
     belongs_to :account, Account
+    belongs_to :category, Category
     field :operation_date, :date
     field :value_date, :date
     field :amount, Money.Ecto.Type

@@ -8,6 +8,7 @@ defmodule FinecoImport do
   """
 
   alias Salvadanaio.Account
+  alias Salvadanaio.Category
   alias Salvadanaio.Repo
 
   # After this line in the XLSX file, the movements begin
@@ -82,6 +83,8 @@ defmodule FinecoImport do
   end
 
   defp add_movement(movement_attrs) do
+    category_id = Category.get_category(movement_attrs.description, String.trim(movement_attrs.short_description))
+    movement_attrs = Map.put(movement_attrs, :category_id, category_id)
     Salvadanaio.Services.Movements.insert_movement(movement_attrs)
   end
 

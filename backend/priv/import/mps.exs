@@ -6,6 +6,7 @@ defmodule MpsImport do
   """
 
   alias Salvadanaio.Account
+  alias Salvadanaio.Category
   alias Salvadanaio.Repo
 
   # After this line in the XLSX file, the movements begin
@@ -50,8 +51,8 @@ defmodule MpsImport do
       [nil, operation_date, value_date, short_description, description, "", amount] ->
         movement_attrs = %Salvadanaio.Movement{
           account_id: account_id,
-          operation_date: Date.from_erl!(operation_date),
-          value_date: Date.from_erl!(value_date),
+          operation_date: NaiveDateTime.to_date(operation_date),
+          value_date: NaiveDateTime.to_date(value_date),
           amount: Money.new(Kernel.trunc(Kernel.round(amount*100)), :EUR),
           short_description: short_description,
           description: description
@@ -62,6 +63,8 @@ defmodule MpsImport do
   end
 
   defp add_movement(movement_attrs) do
+    category_id = Category.get_category(movement_attrs.description, String.trim(movement_attrs.short_description))
+    movement_attrs = Map.put(movement_attrs, :category_id, category_id)
     Salvadanaio.Services.Movements.insert_movement(movement_attrs)
   end
 

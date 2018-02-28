@@ -1,37 +1,49 @@
-# Accounts
-a1 = Salvadanaio.Repo.insert!(%Salvadanaio.Account{
-  name: "Fineco",
-  balance: Money.new(0, :EUR),
-  balance_update_date: Date.utc_today()
-})
-a2 = Salvadanaio.Repo.insert!(%Salvadanaio.Account{
-  name: "MPS",
-  balance: Money.new(0, :EUR),
-  balance_update_date: Date.utc_today()
+Salvadanaio.Repo.insert!(%Salvadanaio.Category{
+  title: "Stipendio",
+  identifier: "stipendio"
 })
 
-# Movements
-Salvadanaio.Services.Movements.insert_movement(%Salvadanaio.Movement{
-  account: a1,
-  operation_date: Date.utc_today(),
-  value_date: Date.utc_today(),
-  amount: Money.new(1012, :EUR),
-  short_description: "Fake movement",
-  description: "Fake movement, but longer",
+Salvadanaio.Repo.insert!(%Salvadanaio.Category{
+  title: "COOP",
+  identifier: "coop"
 })
-Salvadanaio.Services.Movements.insert_movement(%Salvadanaio.Movement{
-  account: a2,
-  operation_date: Date.utc_today(),
-  value_date: Date.utc_today(),
-  amount: Money.new(5233, :EUR),
-  short_description: "Fake movement",
-  description: "Fake movement, but longer",
+
+Salvadanaio.Repo.insert!(%Salvadanaio.Category{
+  title: "Acquisti",
+  identifier: "acquisti"
 })
-Salvadanaio.Services.Movements.insert_movement(%Salvadanaio.Movement{
-  account: a1,
-  operation_date: Date.utc_today(),
-  value_date: Date.utc_today(),
-  amount: Money.new(6503, :EUR),
-  short_description: "Fake movement",
-  description: "Fake movement, but longer",
+
+Salvadanaio.Repo.insert!(%Salvadanaio.Category{
+  title: "Mutuo",
+  identifier: "mutuo",
+})
+
+Salvadanaio.Repo.insert!(%Salvadanaio.Category{
+  title: "Spese bancarie",
+  identifier: "banca",
+})
+
+Salvadanaio.Repo.insert!(%Salvadanaio.Category{
+  title: "Telefonia",
+  identifier: "telefonia",
+})
+
+Salvadanaio.Repo.insert!(%Salvadanaio.Category{
+  title: "Casa",
+  identifier: "casa",
+})
+
+Salvadanaio.Repo.insert!(%Salvadanaio.Category{
+  title: "Mezzi di trasporto",
+  identifier: "trasporti",
+})
+
+Salvadanaio.Repo.insert!(%Salvadanaio.Category{
+  title: "Salute",
+  identifier: "salute",
+})
+
+Salvadanaio.Repo.insert!(%Salvadanaio.Category{
+  title: "ATM",
+  identifier: "atm",
 })

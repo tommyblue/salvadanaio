@@ -25,7 +25,7 @@ defmodule SalvadanaioWeb.Api.V1.MovementsController do
       date_range ->
         from(m in query, where: m.operation_date >= ^Date.add(Date.utc_today, -String.to_integer(date_range)))
     end
-    movements = Repo.all(query) |> Repo.preload(:account)
+    movements = Repo.all(query) |> Repo.preload([:account, :category])
     render conn, "index.json", movements: movements
   end
 

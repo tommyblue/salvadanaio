@@ -8,6 +8,6 @@ defmodule Salvadanaio.Repo.Migrations.CreateAccounts do
       add :balance_update_date, :date
       timestamps()
     end
-
+    create index(:accounts, [:name], unique: true)
   end
 end

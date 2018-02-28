@@ -19,6 +19,8 @@ defmodule SalvadanaioWeb.Api.V1.MovementsView do
       description: movement.description,
       account_id: movement.account_id,
       account: render_one(movement.account, SalvadanaioWeb.Api.V1.AccountsView, "account.json", as: :account),
+      category_id: movement.category_id,
+      category: render_one(movement.category, SalvadanaioWeb.Api.V1.CategoriesView, "category.json", as: :category),
     }
   end
 end
