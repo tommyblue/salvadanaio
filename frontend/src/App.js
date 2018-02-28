@@ -7,6 +7,7 @@ import {
 
 import NavBar from './components/Navbar';
 import Accounts from './containers/Accounts';
+import Dashboard from './containers/Dashboard';
 import Movements from './containers/Movements';
 
 import './App.css';
@@ -20,7 +21,7 @@ class App extends Component {
                     <Switch>
                         <Route path='/movements' component={Movements}/>
                         <Route path='/accounts' component={Accounts}/>
-                        <Route component={Movements}/>
+                        <Route component={Dashboard}/>
                     </Switch>
                 </div>
             </Router>

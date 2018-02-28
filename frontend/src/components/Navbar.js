@@ -13,6 +13,7 @@ export default class extends React.Component {
                     </div>
                     <div className="navbar-menu">
                         <div className="navbar-start">
+                            <Link to="/" className="navbar-item">Dashboard</Link>
                             <Link to="/accounts" className="navbar-item">Accounts</Link>
                             <Link to="/movements" className="navbar-item">Movements</Link>
                         </div>

@@ -1,10 +1,8 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import _ from 'lodash';
 
 import {loadAccounts} from '../actions';
-import {formatMoney, formatISODate} from '../utils';
-import LoadingSpinner from '../components/LoadingSpinner';
+import AccountsTable from '../components/AccountsTable';
 
 const mapStateToProps = state => {
     return {
@@ -29,34 +27,8 @@ class Accounts extends React.Component {
         return (
             <div className="container">
                 <h1 className="title">Accounts</h1>
-                {this.accountsTable()}
+                <AccountsTable accounts={this.props.accounts} />
             </div>
-        );
-    }
-
-    accountsTable() {
-        if (_.isEmpty(this.props.accounts)) {
-            return (<LoadingSpinner />);
-        }
-        return (
-            <table className="table is-bordered is-striped is-fullwidth">
-                <thead>
-                    <tr>
-                        <th>Account name</th>
-                        <th>Balance</th>
-                        <th>Last balance update</th>
-                    </tr>
-                </thead>
-                <tbody>
-                {_.map(this.props.accounts, (a) => (
-                    <tr key={`account_${a.id}`}>
-                        <td>{a.name}</td>
-                        <td>{formatMoney(a.balance)}</td>
-                        <td>{formatISODate(a.balance_update_date)}</td>
-                    </tr>
-                ))}
-                </tbody>
-            </table>
         );
     }
 }
