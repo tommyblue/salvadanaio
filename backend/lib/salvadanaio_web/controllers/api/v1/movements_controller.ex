@@ -23,8 +23,7 @@ defmodule SalvadanaioWeb.Api.V1.MovementsController do
     query = case Map.get(params, "date_range") do
       nil -> query
       date_range ->
-        {date_range, ""} = Integer.parse(date_range)
-        from(m in query, where: m.operation_date >= ^Date.add(Date.utc_today, -date_range))
+        from(m in query, where: m.operation_date >= ^Date.add(Date.utc_today, -String.to_integer(date_range)))
     end
     movements = Repo.all(query) |> Repo.preload(:account)
     render conn, "index.json", movements: movements
