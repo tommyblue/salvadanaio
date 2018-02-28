@@ -80,7 +80,12 @@ class Movements extends React.Component {
                 <tbody>
                 {_.map(this.props.movements, (m) => (
                     <tr key={`account_${m.id}`}>
-                        <td>{m.short_description}</td>
+                        <td>
+                            {m.short_description}
+                            <span className="movement-description tooltip is-tooltip-multiline" data-tooltip={m.description}>
+                                <i className="fas fa-info-circle" />
+                            </span>
+                        </td>
                         <td>{formatMoney(m.amount)}</td>
                         <td>{formatISODate(m.operation_date)}</td>
                         <td>{formatISODate(m.value_date)}</td>

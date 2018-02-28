@@ -1,0 +1,9 @@
+@import "../node_modules/bulma/bulma.sass";
+@import "../node_modules/bulma-tooltip/dist/bulma-tooltip.sass";
+
+.tooltip {
+    &.movement-description {
+        margin-left: 1em;
+        cursor: pointer;
+    }
+}
