@@ -1,6 +1,8 @@
 import {
     ERROR_HAPPENED,
     LOADED_ACCOUNT,
+    LOADED_ANALYTICS_BALANCE,
+    LOADED_ANALYTICS_MOVEMENTS,
     LOADED_MOVEMENT,
     SELECT_ACCOUNT,
     SELECT_CATEGORY,
@@ -13,6 +15,10 @@ const initialState = {
     selectedAccount: undefined,
     selectedCategory: "",
     selectedDateRange: 30,
+    analytics: {
+        balance: [],
+        movements: [],
+    },
 };
 
 const mainReducer = (state = initialState, action) => {
@@ -35,6 +41,21 @@ const mainReducer = (state = initialState, action) => {
         case SELECT_CATEGORY:
             return ({...state,
                 selectedCategory: action.category_id
+            });
+        // ANALYTICS
+        case LOADED_ANALYTICS_BALANCE:
+            return ({...state,
+                analytics: {
+                    ...state.analytics,
+                    balance: action.balance,
+                }
+            });
+        case LOADED_ANALYTICS_MOVEMENTS:
+            return ({...state,
+                analytics: {
+                    ...state.analytics,
+                    movements: action.movements,
+                }
             });
         // GENERIC
         case SELECT_DATERANGE:
