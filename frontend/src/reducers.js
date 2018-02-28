@@ -3,13 +3,15 @@ import {
     LOADED_ACCOUNT,
     LOADED_MOVEMENT,
     SELECT_ACCOUNT,
+    SELECT_CATEGORY,
     SELECT_DATERANGE,
 } from './actions';
 
 const initialState = {
     accounts: [],
     movements: [],
-    selectedAccount: 0,
+    selectedAccount: undefined,
+    selectedCategory: "",
     selectedDateRange: 30,
 };
 
@@ -28,6 +30,11 @@ const mainReducer = (state = initialState, action) => {
         case LOADED_MOVEMENT:
             return ({...state,
                 movements: action.movements
+            });
+        // CATEGORIES
+        case SELECT_CATEGORY:
+            return ({...state,
+                selectedCategory: action.category_id
             });
         // GENERIC
         case SELECT_DATERANGE:

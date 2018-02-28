@@ -2,18 +2,24 @@ import React from 'react';
 import { connect } from 'react-redux';
 import _ from 'lodash';
 
-import {loadMovements, loadAccounts, selectAccount, selectDateRange} from '../actions';
-import {formatMoney, formatISODate} from '../utils';
+import {
+    loadMovements,
+    loadAccounts,
+    selectAccount,
+    selectCategory,
+    selectDateRange,
+} from '../actions';
 import AccountSelector from '../components/AccountSelector';
 import DateRangeSelector from '../components/DateRangeSelector';
-import LoadingSpinner from '../components/LoadingSpinner';
-import Tag from '../components/Tag';
+import CategorySelector from '../components/CategorySelector';
+import MovementsTable from '../components/MovementsTable';
 
 const mapStateToProps = state => {
     return {
         accounts: state.accounts,
         movements: state.movements,
         selectedAccount: state.selectedAccount,
+        selectedCategory: state.selectedCategory,
         selectedDateRange: state.selectedDateRange,
     };
 };
@@ -23,10 +29,17 @@ const mapDispatchToProps = dispatch => {
         onLoadMovements: (account_id) => dispatch(loadMovements(account_id)),
         onLoadAccounts: () => dispatch(loadAccounts()),
         onSelectAccount: (account_id) => dispatch(selectAccount(account_id)),
+        onSelectCategory: (category_id) => dispatch(selectCategory(category_id)),
         onSelectDateRange: (dateRange) => dispatch(selectDateRange(dateRange)),
     }
 };
 class Movements extends React.Component {
+    constructor(props) {
+        super(props);
+        this.state = {availableCategories: []};
+        this.selectAccount = this.selectAccount.bind(this);
+    }
+
     componentDidMount() {
         this.props.onLoadAccounts();
         if (this.props.selectedAccount) {
@@ -38,12 +51,28 @@ class Movements extends React.Component {
     }
 
     componentWillReceiveProps(nextProps) {
-        if (this.props.selectedAccount !== nextProps.selectedAccount || this.props.selectedDateRange !== nextProps.selectedDateRange) {
+        if (this.props.selectedAccount !== nextProps.selectedAccount
+            || this.props.selectedDateRange !== nextProps.selectedDateRange
+        ) {
             this.props.onLoadMovements({
                 accountId: nextProps.selectedAccount,
                 dateRange: nextProps.selectedDateRange
             });
         }
+
+        const categories = [];
+        const categories_ids = [];
+        _.forEach(nextProps.movements, (m) => {
+            if (m.category && !_.includes(categories_ids, m.category.identifier)) {
+                categories.push(m.category);
+                categories_ids.push(m.category.identifier);
+            }
+        });
+        this.setState({...this.state, availableCategories: _.sortBy(categories, "title")});
+    }
+
+    componentWillUnmount() {
+        this.props.onSelectCategory("");
     }
 
     render() {
@@ -53,70 +82,34 @@ class Movements extends React.Component {
                 <AccountSelector
                     accounts={this.props.accounts}
                     selectedAccount={this.props.selectedAccount}
-                    onSelectAccount={this.props.onSelectAccount}
+                    onSelectAccount={this.selectAccount}
                 />
                 <DateRangeSelector
                     selectedDateRange={this.props.selectedDateRange}
                     onSelectDateRange={this.props.onSelectDateRange}
                 />
-                {this.movementsTable()}
+                <CategorySelector
+                    categories={this.state.availableCategories}
+                    selectedCategory={this.props.selectedCategory}
+                    onSelectCategory={this.props.onSelectCategory}
+                />
+                <MovementsTable movements={this.getFilteredMovements()}/>
             </div>
         );
     }
 
-    movementsTable() {
-        if (_.isEmpty(this.props.movements)) {
-            return (<LoadingSpinner />);
+    selectAccount(account_id) {
+        if (account_id !== this.props.selectedAccount) {
+            this.props.onSelectAccount(account_id);
+            this.props.onSelectCategory("");
         }
-        return (
-            <table className="table is-bordered is-striped is-fullwidth">
-                <thead>
-                    <tr>
-                        <th>Description</th>
-                        <th>Category</th>
-                        <th>Amount</th>
-                        <th>Operation date</th>
-                        <th>Value date</th>
-                    </tr>
-                </thead>
-                <tbody>
-                {_.map(this.props.movements, (m) => (
-                    <tr key={`account_${m.id}`}>
-                        <td>
-                            {this.showDescription(m)}
-                        </td>
-                        <td>{this.showCategory(m.category)}</td>
-                        <td>{formatMoney(m.amount)}</td>
-                        <td>{formatISODate(m.operation_date)}</td>
-                        <td>{formatISODate(m.value_date)}</td>
-                    </tr>
-                ))}
-                </tbody>
-            </table>
-        );
     }
 
-    showDescription(movement) {
-        const description = movement.description ? (
-            <span
-                className="movement-description tooltip is-tooltip-multiline"
-                data-tooltip={movement.description}
-            >
-                <i className="fas fa-info-circle" />
-            </span>) : "";
-        return (
-            <span>
-                {movement.short_description}
-                {description}
-            </span>
-        );
-    }
-
-    showCategory(category) {
-        if (category) {
-            return (<Tag title={category.title} />);
+    getFilteredMovements() {
+        if (_.isNil(this.props.selectedCategory) || _.isEmpty(this.props.selectedCategory)) {
+            return this.props.movements;
         }
-        return "";
+        return _.filter(this.props.movements, (m) => (m.category && m.category.identifier === this.props.selectedCategory));
     }
 }
 
