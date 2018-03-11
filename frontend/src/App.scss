@@ -1,9 +1,16 @@
 @import "../node_modules/bulma/bulma.sass";
 @import "../node_modules/bulma-tooltip/dist/bulma-tooltip.sass";
+@import "../node_modules/bulma-calendar/dist/bulma-calendar.sass";
 
 .tooltip {
     &.movement-description {
         margin-left: 1em;
         cursor: pointer;
+    }
+}
+
+.movement-filters {
+    > div.select {
+        margin-right: 1em;
     }
 }

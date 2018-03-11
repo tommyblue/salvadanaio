@@ -1,4 +1,4 @@
-import {fetchResource, errorOnFetch} from './fetch';
+import {fetchResource, saveResource, errorOnFetch} from './fetch';
 
 export const LOADED_MOVEMENT = "LOADED_MOVEMENT";
 
@@ -20,3 +20,9 @@ const loadedMovements = (movements) => ({
     type: LOADED_MOVEMENT,
     movements,
 });
+
+export const saveMovement = (movement) => {
+    return function (dispatch) {
+        return saveResource(`movements`, movement);
+    };
+};

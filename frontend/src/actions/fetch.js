@@ -4,6 +4,17 @@ export const fetchResource = (url) => {
     return fetch(`http://localhost:4000/api/v1/${url}`).then(response => response.json());
 }
 
+export const saveResource = (url, body) => {
+    return fetch(`http://localhost:4000/api/v1/${url}`, {
+        method: "POST",
+        headers: {
+            'Accept': 'application/json',
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(body),
+      }).then(response => response.json());
+}
+
 export const errorOnFetch = (error) => ({
     type: ERROR_HAPPENED,
     errors: error,

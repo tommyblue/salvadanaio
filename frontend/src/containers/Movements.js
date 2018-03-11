@@ -5,6 +5,7 @@ import _ from 'lodash';
 import {
     loadMovements,
     loadAccounts,
+    saveMovement,
     selectAccount,
     selectCategory,
     selectDateRange,
@@ -13,6 +14,7 @@ import AccountSelector from '../components/AccountSelector';
 import DateRangeSelector from '../components/DateRangeSelector';
 import CategorySelector from '../components/CategorySelector';
 import MovementsTable from '../components/MovementsTable';
+import MovementModal from '../components/MovementModal';
 
 const mapStateToProps = state => {
     return {
@@ -31,6 +33,7 @@ const mapDispatchToProps = dispatch => {
         onSelectAccount: (account_id) => dispatch(selectAccount(account_id)),
         onSelectCategory: (category_id) => dispatch(selectCategory(category_id)),
         onSelectDateRange: (dateRange) => dispatch(selectDateRange(dateRange)),
+        onSaveMovement: (movement) => dispatch(saveMovement(movement)),
     }
 };
 class Movements extends React.Component {
@@ -79,20 +82,30 @@ class Movements extends React.Component {
         return (
             <div className="container">
                 <h1 className="title">Movements</h1>
-                <AccountSelector
-                    accounts={this.props.accounts}
-                    selectedAccount={this.props.selectedAccount}
-                    onSelectAccount={this.selectAccount}
-                />
-                <DateRangeSelector
-                    selectedDateRange={this.props.selectedDateRange}
-                    onSelectDateRange={this.props.onSelectDateRange}
-                />
-                <CategorySelector
-                    categories={this.state.availableCategories}
-                    selectedCategory={this.props.selectedCategory}
-                    onSelectCategory={this.props.onSelectCategory}
-                />
+                <div className="columns">
+                    <div className="column movement-filters">
+                        <AccountSelector
+                            accounts={this.props.accounts}
+                            selectedAccount={this.props.selectedAccount}
+                            onSelectAccount={this.selectAccount}
+                        />
+                        <DateRangeSelector
+                            selectedDateRange={this.props.selectedDateRange}
+                            onSelectDateRange={this.props.onSelectDateRange}
+                        />
+                        <CategorySelector
+                            categories={this.state.availableCategories}
+                            selectedCategory={this.props.selectedCategory}
+                            onSelectCategory={this.props.onSelectCategory}
+                        />
+                    </div>
+                    <div className="column is-2 is-offset-4">
+                        <MovementModal
+                            accounts={this.props.accounts}
+                            onSaveMovement={this.props.onSaveMovement}
+                        />
+                    </div>
+                </div>
                 <MovementsTable movements={this.getFilteredMovements()}/>
             </div>
         );

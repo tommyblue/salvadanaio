@@ -1,5 +1,5 @@
 import {LOADED_ACCOUNT, SELECT_ACCOUNT, loadAccounts, selectAccount} from './accounts';
-import {LOADED_MOVEMENT, loadMovements} from './movements';
+import {LOADED_MOVEMENT, loadMovements, saveMovement} from './movements';
 import {
     LOADED_ANALYTICS_BALANCE,
     LOADED_ANALYTICS_MOVEMENTS,
@@ -11,7 +11,7 @@ import {SELECT_DATERANGE, selectDateRange} from './common';
 import {SELECT_CATEGORY, selectCategory} from './category';
 
 export {LOADED_ACCOUNT, SELECT_ACCOUNT, loadAccounts, selectAccount};
-export {LOADED_MOVEMENT, loadMovements};
+export {LOADED_MOVEMENT, loadMovements, saveMovement};
 export {ERROR_HAPPENED};
 export {SELECT_DATERANGE, selectDateRange};
 export {SELECT_CATEGORY, selectCategory};

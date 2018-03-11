@@ -13,7 +13,7 @@ const availableDateRanges = [{
 }];
 
 export default (props) => (
-    <div className="select is-right">
+    <div className="select">
         <select value={props.selectedDateRange} onChange={(e) => (props.onSelectDateRange(e.target.value))}>
             {_.map(availableDateRanges, (d) => (
                 <option key={d.value} value={d.value}>{d.title}</option>
