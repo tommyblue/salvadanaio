@@ -7,6 +7,7 @@ import {
     SELECT_ACCOUNT,
     SELECT_CATEGORY,
     SELECT_DATERANGE,
+    TOGGLE_MOVEMENTS_MODAL,
 } from './actions';
 
 const initialState = {
@@ -19,6 +20,7 @@ const initialState = {
         balance: [],
         movements: [],
     },
+    showMovementsModal: false,
 };
 
 const mainReducer = (state = initialState, action) => {
@@ -36,6 +38,10 @@ const mainReducer = (state = initialState, action) => {
         case LOADED_MOVEMENT:
             return ({...state,
                 movements: action.movements
+            });
+        case TOGGLE_MOVEMENTS_MODAL:
+            return ({...state,
+                showMovementsModal: !state.showMovementsModal,
             });
         // CATEGORIES
         case SELECT_CATEGORY:
