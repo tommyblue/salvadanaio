@@ -10,6 +10,7 @@ import {
     selectCategory,
     selectDateRange,
     toggleShowMovementsModal,
+    deleteMovement
 } from '../actions';
 import AccountSelector from '../components/AccountSelector';
 import DateRangeSelector from '../components/DateRangeSelector';
@@ -37,6 +38,7 @@ const mapDispatchToProps = dispatch => {
         onSelectDateRange: (dateRange) => dispatch(selectDateRange(dateRange)),
         onSaveMovement: (movement) => dispatch(saveMovement(movement)),
         toggleShowMovementsModal: () => dispatch(toggleShowMovementsModal()),
+        onDeleteMovement: (movement_id) => dispatch(deleteMovement(movement_id)),
     }
 };
 class Movements extends React.Component {
@@ -111,7 +113,10 @@ class Movements extends React.Component {
                         />
                     </div>
                 </div>
-                <MovementsTable movements={this.getFilteredMovements()}/>
+                <MovementsTable
+                    movements={this.getFilteredMovements()}
+                    onDeleteMovement={this.props.onDeleteMovement}
+                />
             </div>
         );
     }

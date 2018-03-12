@@ -15,6 +15,7 @@ export default class extends React.Component {
                         <th>Amount</th>
                         <th>Operation date</th>
                         <th>Value date</th>
+                        <th />
                     </tr>
                 </thead>
                 <tbody>
@@ -27,6 +28,18 @@ export default class extends React.Component {
                         <td>{formatMoney(m.amount)}</td>
                         <td>{formatISODate(m.operation_date)}</td>
                         <td>{formatISODate(m.value_date)}</td>
+                        <td>
+                            <a
+                                className="button is-small is-danger"
+                                alt="Delete"
+                                title="Delete"
+                                onClick={this.props.onDeleteMovement.bind(this, m.id)}
+                            >
+                                <span className="icon is-small">
+                                    <i className="fas fa-trash-alt" />
+                                </span>
+                            </a>
+                        </td>
                     </tr>
                 ))}
                 </tbody>

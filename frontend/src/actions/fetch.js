@@ -19,3 +19,9 @@ export const errorOnFetch = (error) => ({
     type: ERROR_HAPPENED,
     errors: error,
 });
+
+export const deleteResource = (url) => {
+    return fetch(`http://localhost:4000/api/v1/${url}`, {
+        method: "DELETE",
+      });
+};

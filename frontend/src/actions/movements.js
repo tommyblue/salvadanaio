@@ -1,4 +1,4 @@
-import {fetchResource, saveResource, errorOnFetch} from './fetch';
+import {fetchResource, saveResource, deleteResource, errorOnFetch} from './fetch';
 
 export const LOADED_MOVEMENT = "LOADED_MOVEMENT";
 export const TOGGLE_MOVEMENTS_MODAL = "TOGGLE_MOVEMENTS_MODAL";
@@ -40,3 +40,15 @@ export const saveMovement = (movement) => {
 export const toggleShowMovementsModal = () => ({
     type: TOGGLE_MOVEMENTS_MODAL,
 });
+
+export const deleteMovement = (movement_id) => {
+    return function (dispatch, getState) {
+        return deleteResource(`movements/${movement_id}`).then(
+            response => dispatch(loadMovements({
+                accountId: getState().selectedAccount,
+                dateRange: getState().selectedDateRange,
+            })),
+            error => dispatch(errorOnFetch(error))
+        );
+    };
+};
