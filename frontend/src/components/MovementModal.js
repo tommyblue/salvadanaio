@@ -6,14 +6,7 @@ import MovementForm from './MovementForm';
 export default class extends React.Component {
     constructor(props) {
         super(props);
-        this.state = {
-            "account_id": props.accounts.length > 0 ? props.accounts[0].id : "",
-            "amount": "",
-            "operation_date": "",
-            "value_date": "",
-            "short_description": "",
-            "description": "",
-        };
+        this.state = this.getInitialState(props);
         this.setValue = this.setValue.bind(this);
         this.submitForm = this.submitForm.bind(this);
     }
@@ -46,6 +39,7 @@ export default class extends React.Component {
                     <section className="modal-card-body">
                         <MovementForm
                             accounts={this.props.accounts}
+                            categories={this.props.categories}
                             movement={this.state}
                             onSetValue={this.setValue}
                         />
@@ -68,6 +62,18 @@ export default class extends React.Component {
     }
 
     submitForm() {
-        this.props.onSaveMovement(this.state);
+        this.props.onSaveMovement(this.state).then(() => this.setState({...this.getInitialState(this.props)}));
+    }
+
+    getInitialState(props) {
+        return {
+            "account_id": props.accounts.length > 0 ? props.accounts[0].id : "",
+            "category_id": "",
+            "amount": "",
+            "operation_date": "",
+            "value_date": "",
+            "short_description": "",
+            "description": "",
+        };
     }
 }

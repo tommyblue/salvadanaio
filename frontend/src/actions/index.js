@@ -1,4 +1,5 @@
 import {LOADED_ACCOUNT, SELECT_ACCOUNT, loadAccounts, selectAccount} from './accounts';
+import {LOADED_CATEGORY, loadCategories, SELECT_CATEGORY, selectCategory} from './categories';
 import {
     LOADED_MOVEMENT,
     TOGGLE_MOVEMENTS_MODAL,
@@ -15,7 +16,6 @@ import {
 } from './analytics';
 import {ERROR_HAPPENED} from './fetch';
 import {SELECT_DATERANGE, selectDateRange} from './common';
-import {SELECT_CATEGORY, selectCategory} from './category';
 
 export {LOADED_ACCOUNT, SELECT_ACCOUNT, loadAccounts, selectAccount};
 export {
@@ -26,6 +26,7 @@ export {
     toggleShowMovementsModal,
     deleteMovement,
 };
+export {LOADED_CATEGORY, loadCategories,};
 export {ERROR_HAPPENED};
 export {SELECT_DATERANGE, selectDateRange};
 export {SELECT_CATEGORY, selectCategory};

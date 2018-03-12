@@ -3,14 +3,15 @@ import { connect } from 'react-redux';
 import _ from 'lodash';
 
 import {
-    loadMovements,
+    deleteMovement,
     loadAccounts,
+    loadCategories,
+    loadMovements,
     saveMovement,
     selectAccount,
     selectCategory,
     selectDateRange,
     toggleShowMovementsModal,
-    deleteMovement
 } from '../actions';
 import AccountSelector from '../components/AccountSelector';
 import DateRangeSelector from '../components/DateRangeSelector';
@@ -21,6 +22,7 @@ import MovementModal from '../components/MovementModal';
 const mapStateToProps = state => {
     return {
         accounts: state.accounts,
+        categories: state.categories,
         movements: state.movements,
         selectedAccount: state.selectedAccount,
         selectedCategory: state.selectedCategory,
@@ -33,6 +35,7 @@ const mapDispatchToProps = dispatch => {
     return {
         onLoadMovements: (params) => dispatch(loadMovements(params)),
         onLoadAccounts: () => dispatch(loadAccounts()),
+        onLoadCategories: () => dispatch(loadCategories()),
         onSelectAccount: (account_id) => dispatch(selectAccount(account_id)),
         onSelectCategory: (category_id) => dispatch(selectCategory(category_id)),
         onSelectDateRange: (dateRange) => dispatch(selectDateRange(dateRange)),
@@ -44,12 +47,12 @@ const mapDispatchToProps = dispatch => {
 class Movements extends React.Component {
     constructor(props) {
         super(props);
-        this.state = {availableCategories: []};
         this.selectAccount = this.selectAccount.bind(this);
     }
 
     componentDidMount() {
         this.props.onLoadAccounts();
+        this.props.onLoadCategories();
         if (this.props.selectedAccount) {
             this.props.onLoadMovements({
                 accountId: this.props.selectedAccount,
@@ -67,16 +70,6 @@ class Movements extends React.Component {
                 dateRange: nextProps.selectedDateRange
             });
         }
-
-        const categories = [];
-        const categories_ids = [];
-        _.forEach(nextProps.movements, (m) => {
-            if (m.category && !_.includes(categories_ids, m.category.identifier)) {
-                categories.push(m.category);
-                categories_ids.push(m.category.identifier);
-            }
-        });
-        this.setState({...this.state, availableCategories: _.sortBy(categories, "title")});
     }
 
     componentWillUnmount() {
@@ -99,7 +92,7 @@ class Movements extends React.Component {
                             onSelectDateRange={this.props.onSelectDateRange}
                         />
                         <CategorySelector
-                            categories={this.state.availableCategories}
+                            categories={this.props.categories}
                             selectedCategory={this.props.selectedCategory}
                             onSelectCategory={this.props.onSelectCategory}
                         />
@@ -109,6 +102,7 @@ class Movements extends React.Component {
                             showModal={this.props.showMovementsModal}
                             toggleShowModal={this.props.toggleShowMovementsModal}
                             accounts={this.props.accounts}
+                            categories={this.props.categories}
                             onSaveMovement={this.props.onSaveMovement}
                         />
                     </div>
@@ -129,10 +123,10 @@ class Movements extends React.Component {
     }
 
     getFilteredMovements() {
-        if (_.isNil(this.props.selectedCategory) || _.isEmpty(this.props.selectedCategory)) {
+        if (!_.isNumber(this.props.selectedCategory)) {
             return this.props.movements;
         }
-        return _.filter(this.props.movements, (m) => (m.category && m.category.identifier === this.props.selectedCategory));
+        return _.filter(this.props.movements, (m) => (m.category_id === this.props.selectedCategory));
     }
 }
 

@@ -2,12 +2,14 @@ import React from 'react';
 import _ from 'lodash';
 
 import AccountSelector from './AccountSelector';
+import CategorySelector from './CategorySelector';
 import CalendarField from './CalendarField';
 
 export default class extends React.Component {
     constructor(props) {
         super(props);
         this.selectAccount = this.selectAccount.bind(this);
+        this.selectCategory = this.selectCategory.bind(this);
     }
 
     render() {
@@ -20,6 +22,17 @@ export default class extends React.Component {
                             accounts={this.props.accounts}
                             selectedAccount={this.props.movement.account_id}
                             onSelectAccount={this.selectAccount}
+                        />
+                    </div>
+                </div>
+
+                <div className="field">
+                    <label className="label">Category</label>
+                    <div className="control">
+                        <CategorySelector
+                            categories={this.props.categories}
+                            selectedCategory={this.props.movement.category_id}
+                            onSelectCategory={this.selectCategory}
                         />
                     </div>
                 </div>
@@ -79,6 +92,12 @@ export default class extends React.Component {
     selectAccount(account_id) {
         if (account_id !== this.props.movement.account_id) {
             this.props.onSetValue("account_id", account_id);
+        }
+    }
+
+    selectCategory(category_id) {
+        if (category_id !== this.props.movement.category_id) {
+            this.props.onSetValue("category_id", category_id);
         }
     }
 }

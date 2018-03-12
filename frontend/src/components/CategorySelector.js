@@ -6,7 +6,7 @@ export default (props) => (
         <select value={props.selectedCategory} onChange={(e) => (props.onSelectCategory(e.target.value))}>
             <option value="">Select category</option>
             {_.map(props.categories, (d) => (
-                <option key={d.identifier} value={d.identifier}>{d.title}</option>
+                <option key={d.id} value={d.id}>{d.title}</option>
             ))}
         </select>
     </div>

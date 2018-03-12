@@ -1,6 +1,7 @@
 import {
     ERROR_HAPPENED,
     LOADED_ACCOUNT,
+    LOADED_CATEGORY,
     LOADED_ANALYTICS_BALANCE,
     LOADED_ANALYTICS_MOVEMENTS,
     LOADED_MOVEMENT,
@@ -12,6 +13,7 @@ import {
 
 const initialState = {
     accounts: [],
+    categories: [],
     movements: [],
     selectedAccount: undefined,
     selectedCategory: "",
@@ -33,6 +35,11 @@ const mainReducer = (state = initialState, action) => {
         case SELECT_ACCOUNT:
             return ({...state,
                 selectedAccount: action.account_id
+            });
+        // CATEGORIES
+        case LOADED_CATEGORY:
+            return ({...state,
+                categories: action.categories,
             });
         // MOVEMENTS
         case LOADED_MOVEMENT:

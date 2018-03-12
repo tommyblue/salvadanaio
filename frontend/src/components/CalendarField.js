@@ -8,6 +8,7 @@ export default class extends React.Component {
         super(props);
         this.selectDate = this.selectDate.bind(this);
     }
+
     componentDidMount() {
         new bulmaCalendar(document.getElementById(this.props.elementId), {
             startDate: new Date(), // Date selected by default
