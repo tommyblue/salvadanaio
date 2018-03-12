@@ -20,7 +20,7 @@ defmodule Salvadanaio.Movement do
   @doc false
   def changeset(%Movement{} = movement, attrs) do
     movement
-    |> cast(attrs, [:account_id, :operation_date, :value_date, :amount, :short_description, :description])
+    |> cast(attrs, [:account_id, :category_id, :operation_date, :value_date, :amount, :short_description, :description])
     |> validate_required([:account_id, :operation_date, :amount, :short_description])
   end
 end
