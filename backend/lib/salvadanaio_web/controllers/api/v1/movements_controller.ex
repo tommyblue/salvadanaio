@@ -25,6 +25,9 @@ defmodule SalvadanaioWeb.Api.V1.MovementsController do
       date_range ->
         from(m in query, where: m.operation_date >= ^Date.add(Date.utc_today, -String.to_integer(date_range)))
     end
+
+    query = from(m in query, order_by: [desc: :operation_date])
+
     movements = Repo.all(query) |> Repo.preload([:account, :category])
     render conn, "index.json", movements: movements
   end
@@ -44,7 +47,7 @@ defmodule SalvadanaioWeb.Api.V1.MovementsController do
       |> Multi.run(:update_balance, &Salvadanaio.Services.Movements.update_balance/1)
     ) do
       {:ok, changes} ->
-        movement = Repo.preload(changes.movement, :account)
+        movement = Repo.preload(changes.movement, [:account, :category])
         conn
         |> put_status(:created)
         |> render "show.json", movement: movement
@@ -66,9 +69,10 @@ defmodule SalvadanaioWeb.Api.V1.MovementsController do
       |> Multi.run(:update_balance, &Salvadanaio.Services.Movements.update_balance/1)
     ) do
       {:ok, changes} ->
+        movement = Repo.preload(changes.movement, [:account, :category])
         conn
         |> put_status(:ok)
-        |> render "show.json", movement: changes.movement
+        |> render "show.json", movement: movement
       {:error, changeset} ->
         conn
         |> put_status(:unprocessable_entity)
