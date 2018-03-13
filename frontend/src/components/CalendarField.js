@@ -1,7 +1,7 @@
 import React from 'react';
 import moment from 'moment';
 
-const bulmaCalendar = require('../../node_modules/bulma-calendar/dist/bulma-calendar.min.js');
+const bulmaCalendar = require('../lib/bulma-calendar');
 
 export default class extends React.Component {
     constructor(props) {
