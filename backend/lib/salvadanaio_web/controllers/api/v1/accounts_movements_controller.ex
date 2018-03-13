@@ -2,8 +2,6 @@ defmodule SalvadanaioWeb.Api.V1.AccountsMovementsController do
   use SalvadanaioWeb, :controller
   alias Salvadanaio.Repo
   alias Salvadanaio.Movement
-  alias SalvadanaioWeb.Api.V1.ChangesetView
-  alias Ecto.Multi
   import Ecto.Query, only: [from: 2]
 
   def index(conn, %{"accounts_id" => account_id} = params) do
