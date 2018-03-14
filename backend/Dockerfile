@@ -10,7 +10,7 @@ RUN mkdir /app
 COPY . /app
 WORKDIR /app
 
-RUN mix local.hex --force
+RUN mix local.hex --force && mix local.rebar --force && mix deps.get
 
 RUN mix do compile
 
