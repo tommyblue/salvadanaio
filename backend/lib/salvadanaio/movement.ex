@@ -4,7 +4,6 @@ defmodule Salvadanaio.Movement do
   alias Salvadanaio.Movement
   alias Salvadanaio.Account
   alias Salvadanaio.Category
-  alias Salvadanaio.Repo
 
   schema "movements" do
     belongs_to :account, Account

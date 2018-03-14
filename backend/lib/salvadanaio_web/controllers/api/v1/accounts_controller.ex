@@ -22,7 +22,7 @@ defmodule SalvadanaioWeb.Api.V1.AccountsController do
       {:ok, account} ->
         conn
         |> put_status(:created)
-        |> render "show.json", account: account
+        |> render("show.json", account: account)
       {:error, changeset} ->
         conn
         |> put_status(:unprocessable_entity)
@@ -39,7 +39,7 @@ defmodule SalvadanaioWeb.Api.V1.AccountsController do
       {:ok, account} ->
         conn
         |> put_status(:ok)
-        |> render "show.json", account: account
+        |> render("show.json", account: account)
       {:error, changeset} ->
         conn
         |> put_status(:unprocessable_entity)

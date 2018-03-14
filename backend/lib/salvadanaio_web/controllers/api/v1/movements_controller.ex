@@ -50,7 +50,7 @@ defmodule SalvadanaioWeb.Api.V1.MovementsController do
         movement = Repo.preload(changes.movement, [:account, :category])
         conn
         |> put_status(:created)
-        |> render "show.json", movement: movement
+        |> render("show.json", movement: movement)
       {:error, changeset} ->
         conn
         |> put_status(:unprocessable_entity)
@@ -72,7 +72,7 @@ defmodule SalvadanaioWeb.Api.V1.MovementsController do
         movement = Repo.preload(changes.movement, [:account, :category])
         conn
         |> put_status(:ok)
-        |> render "show.json", movement: movement
+        |> render("show.json", movement: movement)
       {:error, changeset} ->
         conn
         |> put_status(:unprocessable_entity)
