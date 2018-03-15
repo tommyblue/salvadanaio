@@ -2,6 +2,11 @@
  * COPIED HERE FROM NODE_MODULES BECAUSE OF ERRORS DURING BUILD
  */
 /*eslint no-undef: "off"*/
+/*eslint strict: "off"*/
+/*eslint eqeqeq: "off"*/
+/*eslint no-unused-vars: "off"*/
+/*eslint default-case: "off"*/
+/*eslint no-mixed-operators: "off"*/
 (function (global, factory) {
 	typeof exports === 'object' && typeof module !== 'undefined' ? module.exports = factory() :
 	typeof define === 'function' && define.amd ? define('bulmaCalendar', factory) :

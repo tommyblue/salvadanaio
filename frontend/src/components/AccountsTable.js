@@ -1,14 +1,10 @@
 import React from 'react';
 import _ from 'lodash';
 
-import LoadingSpinner from './LoadingSpinner';
 import {formatMoney, formatISODate} from '../utils';
 
 export default class extends React.Component {
     render() {
-        if (_.isEmpty(this.props.accounts)) {
-            return (<LoadingSpinner />);
-        }
         return (
             <table className="table is-bordered is-striped is-fullwidth">
                 <thead>
@@ -16,6 +12,7 @@ export default class extends React.Component {
                         <th>Account name</th>
                         <th>Balance</th>
                         <th>Last balance update</th>
+                        <th />
                     </tr>
                 </thead>
                 <tbody>
@@ -24,6 +21,18 @@ export default class extends React.Component {
                         <td>{a.name}</td>
                         <td>{formatMoney(a.balance)}</td>
                         <td>{formatISODate(a.balance_update_date)}</td>
+                        <td>
+                            <a
+                                className="button is-small is-danger"
+                                alt="Delete"
+                                title="Delete"
+                                onClick={this.props.onDeleteAccount.bind(this, a.id)}
+                            >
+                                <span className="icon is-small">
+                                    <i className="fas fa-trash-alt" />
+                                </span>
+                            </a>
+                        </td>
                     </tr>
                 ))}
                 </tbody>
