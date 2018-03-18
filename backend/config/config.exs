@@ -37,6 +37,11 @@ config :cors_plug,
   max_age: 86400,
   methods: ["GET", "POST", "DELETE"]
 
-# Import environment specific config. This must remain at the bottom
+# Guardian
+config :salvadanaio, Salvadanaio.Guardian,
+  issuer: "salvadanaio",
+  secret_key: "Secret key. You can use `mix guardian.gen.secret` to get one"
+
+  # Import environment specific config. This must remain at the bottom
 # of this file so it overrides the configuration defined above.
 import_config "#{Mix.env}.exs"

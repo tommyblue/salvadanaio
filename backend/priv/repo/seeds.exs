@@ -1,3 +1,8 @@
+Salvadanaio.Repo.insert!(Salvadanaio.User.changeset(%Salvadanaio.User{}, %{
+  email: "tommaso.visconti@gmail.com",
+  password: "pippo"
+}))
+
 Salvadanaio.Repo.insert!(%Salvadanaio.Category{
   title: "Stipendio",
   identifier: "stipendio"

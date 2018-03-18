@@ -8,7 +8,14 @@ defmodule SalvadanaioWeb.Router do
 
   scope "/api", Api do
     pipe_through :api
+
+    scope "/sessions" do
+      post "/sign_in", SessionsController, :create
+    end
+
     scope "/v1", V1 do
+      pipe_through Salvadanaio.AuthAccessPipeline
+
       resources "/accounts", AccountsController, except: [:new, :edit] do
         resources "/movements", AccountsMovementsController, only: [:index, :show]
       end
