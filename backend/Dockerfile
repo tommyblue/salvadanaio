@@ -7,10 +7,11 @@ RUN apt-get update \
     && rm -rf /root/.cache
 
 RUN mkdir /app
+RUN mix local.hex --force && mix local.rebar --force
 COPY . /app
 WORKDIR /app
 
-RUN mix local.hex --force && mix local.rebar --force && mix deps.get
+RUN mix deps.get
 
 RUN mix do compile
 
