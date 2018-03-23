@@ -41,7 +41,9 @@ defmodule Salvadanaio.Mixfile do
       {:cowboy, "~> 1.0"},
       {:money, "~> 1.2.1"},
       {:xlsxir, github: "jsonkenl/xlsxir"},
-      {:cors_plug, "~> 1.5"}
+      {:cors_plug, "~> 1.5"},
+      {:comeonin, "~> 4.0"},
+      {:bcrypt_elixir, "~> 1.0"}
     ]
   end
 
