@@ -5,7 +5,8 @@ export const TOGGLE_MOVEMENTS_MODAL = "TOGGLE_MOVEMENTS_MODAL";
 
 export const loadMovements = (params) => {
     return function (dispatch) {
-        return fetchResource(`movements?account_id=${params.accountId}&date_range=${params.dateRange}`).then(
+        const url = `movements?account_id=${params.accountId}&date_range=${params.dateRange}`;
+        return fetchResource(url).then(
             response => dispatch(loadedMovements(response.data)),
             error => dispatch(errorOnFetch(error))
         );

@@ -9,6 +9,8 @@ import NavBar from './components/Navbar';
 import Accounts from './containers/Accounts';
 import Dashboard from './containers/Dashboard';
 import Movements from './containers/Movements';
+import PrivateRoute from './containers/PrivateRoute';
+import Login from './containers/Login';
 
 import './App.css';
 
@@ -19,9 +21,10 @@ class App extends Component {
                 <div>
                     <NavBar />
                     <Switch>
-                        <Route path='/movements' component={Movements}/>
-                        <Route path='/accounts' component={Accounts}/>
-                        <Route component={Dashboard}/>
+                        <Route path='/login' component={Login} />
+                        <PrivateRoute path='/movements' component={Movements}/>
+                        <PrivateRoute path='/accounts' component={Accounts}/>
+                        <PrivateRoute component={Dashboard}/>
                     </Switch>
                 </div>
             </Router>
