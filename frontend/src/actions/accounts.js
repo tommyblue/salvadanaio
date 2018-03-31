@@ -28,7 +28,7 @@ export const toggleShowAccountsModal = () => ({
 });
 
 export const saveAccount = (account) => {
-    return function (dispatch, getState) {
+    return function (dispatch) {
         return saveResource(`accounts`, account).then(
             response => {
                 dispatch(loadAccounts());
@@ -40,7 +40,7 @@ export const saveAccount = (account) => {
 };
 
 export const deleteAccount = (account_id) => {
-    return function (dispatch, getState) {
+    return function (dispatch) {
         return deleteResource(`accounts/${account_id}`).then(
             response => dispatch(loadAccounts()),
             error => dispatch(errorOnFetch(error))

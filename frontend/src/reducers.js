@@ -1,4 +1,7 @@
 import {
+    AUTHENTICATION_FAILED,
+    AUTHENTICATION_SIGNOUT,
+    AUTHENTICATION_SUCCEDED,
     ERROR_HAPPENED,
     LOADED_ACCOUNT,
     LOADED_CATEGORY,
@@ -11,6 +14,7 @@ import {
     TOGGLE_ACCOUNTS_MODAL,
     TOGGLE_MOVEMENTS_MODAL,
 } from './actions';
+import { getAuthToken } from './actions/auth';
 
 const initialState = {
     accounts: [],
@@ -25,10 +29,21 @@ const initialState = {
     },
     showMovementsModal: false,
     showAccountsModal: false,
+    isAuthenticated: getAuthToken() !== undefined,
 };
 
 const mainReducer = (state = initialState, action) => {
     switch (action.type) {
+        // AUTH
+        case AUTHENTICATION_SUCCEDED:
+            return ({...state,
+                isAuthenticated: true,
+            });
+        case AUTHENTICATION_FAILED:
+        case AUTHENTICATION_SIGNOUT:
+            return ({...state,
+                isAuthenticated: false,
+            });
         // ACCOUNTS
         case LOADED_ACCOUNT:
             return ({...state,

@@ -10,12 +10,12 @@ export const selectCategory = (category_id) => ({
     category_id: !_.isEmpty(category_id) ? parseInt(category_id, 10) : category_id,
 });
 
-export const loadCategories = () => ((dispatch) => {
+export const loadCategories = () => ((dispatch) => (
     fetchResource('categories').then(
         response => dispatch(loadedCategories(response.data)),
         error => dispatch(errorOnFetch(error))
     )
-});
+));
 
 const loadedCategories = (categories) => ({
     type: LOADED_CATEGORY,

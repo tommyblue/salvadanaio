@@ -25,6 +25,12 @@ import {
 } from './analytics';
 import {ERROR_HAPPENED} from './fetch';
 import {SELECT_DATERANGE, selectDateRange} from './common';
+import {
+    AUTHENTICATION_FAILED,
+    AUTHENTICATION_SIGNOUT,
+    AUTHENTICATION_SUCCEDED,
+    signIn,
+} from './auth';
 
 export {
     deleteAccount,
@@ -47,5 +53,6 @@ export {
 export {LOADED_CATEGORY, loadCategories,};
 export {ERROR_HAPPENED};
 export {SELECT_DATERANGE, selectDateRange};
+export {AUTHENTICATION_FAILED, AUTHENTICATION_SUCCEDED, AUTHENTICATION_SIGNOUT, signIn};
 export {SELECT_CATEGORY, selectCategory};
 export {LOADED_ANALYTICS_BALANCE, LOADED_ANALYTICS_MOVEMENTS, loadAnalyticsBalance, loadAnalyticsMovements};
