@@ -7,7 +7,7 @@ export const AUTHENTICATION_FAILED = "AUTHENTICATION_FAILED";
 export const AUTHENTICATION_SIGNOUT = "AUTHENTICATION_SIGNOUT";
 
 export const signIn = (email, password) => ((dispatch) => {
-    return sessionResource(`sign_in`, {email: email, password: password}).then(
+    return sessionResource(`sign_in`, {email, password}).then(
         response => {
             if (!response.ok) {
                 return response.status === 401

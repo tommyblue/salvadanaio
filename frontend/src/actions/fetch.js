@@ -43,7 +43,7 @@ export const deleteResource = (url, authToken) => {
       });
 };
 
-const getAuthHeaders = (baseOptions) => {
+const mergeAuthHeaders = (baseOptions) => {
     const options = _.isUndefined(baseOptions) ? {} : baseOptions;
     if (!_.has(options, 'headers')) {
         options.headers = {};
@@ -55,8 +55,8 @@ const getAuthHeaders = (baseOptions) => {
     return options;
 }
 
-const authFetch = (url, baseOptions) => (
-    fetch(url, getAuthHeaders(baseOptions)).then(
+const authFetch = (url, options) => (
+    fetch(url, mergeAuthHeaders(options)).then(
         response => {
             if (response.status === 401) {
                 store.dispatch(signOut());

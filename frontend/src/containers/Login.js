@@ -20,7 +20,7 @@ const mapDispatchToProps = dispatch => {
 class Login extends React.Component {
     constructor(props) {
         super(props);
-        this.signIn = this.signIn.bind(this);
+        this.onSignIn = this.onSignIn.bind(this);
         this.state = {email: "", password: ""};
     }
 
@@ -69,13 +69,13 @@ class Login extends React.Component {
 
                 <button
                     className="button is-primary"
-                    onClick={this.signIn}
+                    onClick={this.onSignIn}
                 >Sign in</button>
             </form>
         );
     }
 
-    signIn() {
+    onSignIn() {
         this.props.onSignIn(this.state.email, this.state.password);
     }
 }
