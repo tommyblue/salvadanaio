@@ -35,14 +35,14 @@ class Dashboard extends React.Component {
 
     render() {
         return (
-            <div className="container">
+            <div className="container dashboard">
                 <h1 className="title">Dashboard</h1>
                 <DateRangeSelector
                     selectedDateRange={this.props.selectedDateRange}
                     onSelectDateRange={this.props.onSelectDateRange}
                 />
-                <MovementsChart data={this.props.movements}/>
-                <BalanceChart data={this.props.balance}/>
+                <section><MovementsChart data={this.props.movements}/></section>
+                <section><BalanceChart data={this.props.balance}/></section>
             </div>
         );
     }
