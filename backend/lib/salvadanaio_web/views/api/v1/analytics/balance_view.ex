@@ -2,10 +2,6 @@ defmodule SalvadanaioWeb.Api.V1.Analytics.BalanceView do
   use SalvadanaioWeb, :view
 
   def render("index.json", %{balance: balance}) do
-    %{data: render_many(balance, __MODULE__, "balance.json", as: :balance)}
-  end
-
-  def render("balance.json", %{balance: balance}) do
-    balance
+    %{data: Enum.group_by(balance, fn([h|t]) -> h end, fn([h|t]) -> t end)}
   end
 end
