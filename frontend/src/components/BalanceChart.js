@@ -34,8 +34,8 @@ export default class extends React.Component {
         // Loop over all results and fill in missing accounts each month
         for (let i = 0; i < data.length; i++) {
             _.forEach(accounts, a => {
-                if (_.isNil(data[i][a]) && _.has(data, i-1)) {
-                    data[i][a] = data[i-1][a] || 0;
+                if (_.isNil(data[i][a])) {
+                    data[i][a] = _.has(data, i-1) ? data[i-1][a] : 0;
                 }
             });
         }
