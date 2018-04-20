@@ -41,8 +41,8 @@ class Dashboard extends React.Component {
                     selectedDateRange={this.props.selectedDateRange}
                     onSelectDateRange={this.props.onSelectDateRange}
                 />
-                <section><MovementsChart data={this.props.movements}/></section>
                 <section><BalanceChart data={this.props.balance}/></section>
+                <section><MovementsChart data={this.props.movements}/></section>
             </div>
         );
     }

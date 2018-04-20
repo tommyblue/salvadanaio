@@ -2,6 +2,7 @@ import React from 'react';
 import { BarChart, Bar, CartesianGrid, XAxis, YAxis, Tooltip, Legend } from 'recharts';
 import _ from 'lodash';
 
+import ChartTooltip from './ChartTooltip';
 import { int2Money } from '../utils';
 
 export default class extends React.Component {
@@ -14,7 +15,7 @@ export default class extends React.Component {
                     <CartesianGrid strokeDasharray="3 3" />
                     <XAxis dataKey="name" />
                     <YAxis />
-                    <Tooltip />
+                    <Tooltip content={<ChartTooltip showTotal={false} />}/>
                     <Legend />
                     <Bar dataKey="amount" fill="#8884d8" />
                 </BarChart>

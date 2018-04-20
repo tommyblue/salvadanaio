@@ -1,14 +1,23 @@
-import React from 'react';
-import { LineChart, Line, CartesianGrid, XAxis, YAxis, Tooltip, Legend } from 'recharts';
 import _ from 'lodash';
+import React from 'react';
+import {
+    AreaChart,
+    Area,
+    CartesianGrid,
+    XAxis,
+    YAxis,
+    Tooltip,
+    Legend,
+} from 'recharts';
 
-import {int2Money} from '../utils';
+import ChartTooltip from './ChartTooltip';
+import { int2Money } from '../utils';
 
 export default class extends React.Component {
-    chartColors = ["#18fcd5", "#c75652", "#d945f0"];
+    chartColors = ["#8884d8", "#82ca9d", "#ffc658"];
 
     render() {
-        const data = [];
+        let data = [];
         const accounts = [];
         _.forEach(this.props.data, (values, date)  => {
             const res = {date};
@@ -20,27 +29,40 @@ export default class extends React.Component {
             });
             data.push(res);
         });
+        data = _.sortBy(data, "date");
+
+        // Loop over all results and fill in missing accounts each month
+        for (let i = 0; i < data.length; i++) {
+            _.forEach(accounts, a => {
+                if (_.isNil(data[i][a]) && _.has(data, i-1)) {
+                    data[i][a] = data[i-1][a] || 0;
+                }
+            });
+        }
 
         return (
             <div>
                 <h2 className="title is-3">Balance</h2>
-                <LineChart width={730} height={250} data={data}
+                <AreaChart width={730} height={250} data={data}
                     margin={{ top: 5, right: 30, left: 20, bottom: 5 }}>
                     <XAxis dataKey="date" />
                     <YAxis />
                     <CartesianGrid strokeDasharray="3 3" />
-                    <Tooltip />
+                    <Tooltip content={<ChartTooltip showTotal={true} />}/>
                     <Legend verticalAlign="bottom" height={36} />
                     {_.map(accounts, (acc, i) =>
-                        <Line
+                        <Area
                             key={i}
                             name={acc}
-                            type="linear"
+                            type="monotone"
                             dataKey={acc}
                             stroke={this.chartColors[i]}
+                            fill={this.chartColors[i]}
+                            stackId="1"
+                            unit="€"
                         />
                     )}
-                </LineChart>
+                </AreaChart>
             </div>
         );
     }
