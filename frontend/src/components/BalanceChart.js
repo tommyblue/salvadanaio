@@ -14,7 +14,7 @@ import ChartTooltip from './ChartTooltip';
 import { int2Money } from '../utils';
 
 export default class extends React.Component {
-    chartColors = ["#8884d8", "#82ca9d", "#ffc658"];
+    chartColors = ["#D70918", "#282773", "#D9833B", "#9DC964", "#1962A5"];
 
     render() {
         let data = [];
