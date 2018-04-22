@@ -1,5 +1,6 @@
 import React from 'react';
 import { connect } from 'react-redux';
+import {Redirect} from 'react-router-dom';
 
 import {
     signIn,
@@ -28,13 +29,9 @@ class Login extends React.Component {
         return (
             <div className="container">
                 <h1 className="title">Login</h1>
-                {this.props.isAuthenticated ? this.alreadyAuthenticated() : this.form()}
+                {this.props.isAuthenticated ? <Redirect to="/" /> : this.form()}
             </div>
         );
-    }
-
-    alreadyAuthenticated() {
-        return ("You're already authenticated.")
     }
 
     form() {
