@@ -67,7 +67,7 @@ export default class extends React.Component {
 
     getInitialState(props) {
         return {
-            "account_id": props.accounts.length > 0 ? props.accounts[0].id : "",
+            "account_id": props.accounts && props.accounts.length > 0 ? props.accounts[0].id : "",
             "category_id": "",
             "amount": "",
             "operation_date": "",

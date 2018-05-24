@@ -6,6 +6,7 @@ import {
 } from 'react-router-dom';
 
 import NavBar from './components/Navbar';
+import Notification from './containers/Notification';
 import Accounts from './containers/Accounts';
 import Dashboard from './containers/Dashboard';
 import Movements from './containers/Movements';
@@ -19,6 +20,7 @@ class App extends Component {
         return (
             <Router>
                 <div>
+                    <Notification />
                     <NavBar />
                     <Switch>
                         <Route path='/login' component={Login} />

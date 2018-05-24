@@ -21,6 +21,7 @@ defmodule SalvadanaioWeb.Router do
     scope "/v1", V1 do
       pipe_through :authenticate
       resources "/accounts", AccountsController, except: [:new, :edit] do
+        post "/movements/upload", AccountsMovementsController, :upload
         resources "/movements", AccountsMovementsController, only: [:index, :show]
       end
       resources "/movements", MovementsController, except: [:new, :edit]

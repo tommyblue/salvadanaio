@@ -22,4 +22,12 @@ defmodule SalvadanaioWeb.Api.V1.AccountsMovementsController do
     movement = Repo.get_by!(Movement, id: id, account_id: account_id)
     render conn, "show.json", movement: movement
   end
+
+  def upload(conn, %{"accounts_id" => account_id, "file" => file}) do
+    case Salvadanaio.Import.Filter.get_importer(account_id) do
+      nil -> conn |> put_status(400) |> json(%{error: "what an error!"})
+      import_module -> import_module.run(file.path)
+    end
+    conn |> send_resp(201, "")
+  end
 end

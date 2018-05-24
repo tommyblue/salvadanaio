@@ -16,6 +16,9 @@ import {
     saveMovement,
     TOGGLE_MOVEMENTS_MODAL,
     toggleShowMovementsModal,
+    toggleShowUploadMovementsModal,
+    TOGGLE_UPLOAD_MOVEMENTS_MODAL,
+    uploadMovements,
 } from './movements';
 import {
     LOADED_ANALYTICS_BALANCE,
@@ -23,7 +26,6 @@ import {
     loadAnalyticsBalance,
     loadAnalyticsMovements,
 } from './analytics';
-import {ERROR_HAPPENED} from './fetch';
 import {SELECT_DATERANGE, selectDateRange} from './common';
 import {
     AUTHENTICATION_FAILED,
@@ -31,6 +33,12 @@ import {
     AUTHENTICATION_SUCCEDED,
     signIn,
 } from './auth';
+import {
+    SET_NOTIFICATION,
+    REMOVE_NOTIFICATION,
+    removeNotification,
+    setNotification,
+} from './notification';
 
 export {
     deleteAccount,
@@ -49,10 +57,18 @@ export {
     saveMovement,
     TOGGLE_MOVEMENTS_MODAL,
     toggleShowMovementsModal,
+    toggleShowUploadMovementsModal,
+    TOGGLE_UPLOAD_MOVEMENTS_MODAL,
+    uploadMovements,
 };
 export {LOADED_CATEGORY, loadCategories,};
-export {ERROR_HAPPENED};
 export {SELECT_DATERANGE, selectDateRange};
 export {AUTHENTICATION_FAILED, AUTHENTICATION_SUCCEDED, AUTHENTICATION_SIGNOUT, signIn};
 export {SELECT_CATEGORY, selectCategory};
 export {LOADED_ANALYTICS_BALANCE, LOADED_ANALYTICS_MOVEMENTS, loadAnalyticsBalance, loadAnalyticsMovements};
+export {
+    SET_NOTIFICATION,
+    REMOVE_NOTIFICATION,
+    removeNotification,
+    setNotification,
+};

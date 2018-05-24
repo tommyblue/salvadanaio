@@ -12,12 +12,15 @@ import {
     selectCategory,
     selectDateRange,
     toggleShowMovementsModal,
+    toggleShowUploadMovementsModal,
+    uploadMovements,
 } from '../actions';
 import AccountSelector from '../components/AccountSelector';
 import DateRangeSelector from '../components/DateRangeSelector';
 import CategorySelector from '../components/CategorySelector';
 import MovementsTable from '../components/MovementsTable';
 import MovementModal from '../components/MovementModal';
+import UploadMovementsModal from '../components/UploadMovementsModal';
 
 const mapStateToProps = state => {
     return {
@@ -28,6 +31,7 @@ const mapStateToProps = state => {
         selectedCategory: state.selectedCategory,
         selectedDateRange: state.selectedDateRange,
         showMovementsModal: state.showMovementsModal,
+        showUploadMovementsModal: state.showUploadMovementsModal,
     };
 };
 
@@ -40,7 +44,9 @@ const mapDispatchToProps = dispatch => {
         onSelectCategory: (category_id) => dispatch(selectCategory(category_id)),
         onSelectDateRange: (dateRange) => dispatch(selectDateRange(dateRange)),
         onSaveMovement: (movement) => dispatch(saveMovement(movement)),
+        onUploadMovements: (account_id, file) => dispatch(uploadMovements(account_id, file)),
         toggleShowMovementsModal: () => dispatch(toggleShowMovementsModal()),
+        toggleShowUploadMovementsModal: () => dispatch(toggleShowUploadMovementsModal()),
         onDeleteMovement: (movement_id) => dispatch(deleteMovement(movement_id)),
     }
 };
@@ -97,13 +103,19 @@ class Movements extends React.Component {
                             onSelectCategory={this.props.onSelectCategory}
                         />
                     </div>
-                    <div className="column is-2 is-offset-4">
+                    <div className="column movement-modals-buttons">
                         <MovementModal
                             showModal={this.props.showMovementsModal}
                             toggleShowModal={this.props.toggleShowMovementsModal}
                             accounts={this.props.accounts}
                             categories={this.props.categories}
                             onSaveMovement={this.props.onSaveMovement}
+                        />
+                        <UploadMovementsModal
+                            showModal={this.props.showUploadMovementsModal}
+                            toggleShowModal={this.props.toggleShowUploadMovementsModal}
+                            accounts={this.props.accounts}
+                            onUpload={this.props.onUploadMovements}
                         />
                     </div>
                 </div>

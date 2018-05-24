@@ -2,6 +2,24 @@
 @import "../node_modules/bulma-tooltip/dist/bulma-tooltip.sass";
 @import "../node_modules/bulma-calendar/dist/bulma-calendar.sass";
 
+.main-notification {
+    position: absolute;
+    z-index: 999;
+    top: 1em;
+    right: 1em;
+    width: 30%;
+    max-width: 400px;
+    opacity: 1;
+    box-sizing: border-box;
+    transition: opacity 500ms 500ms;
+    visibility: visible;
+    &.inactive {
+        transition: opacity 500ms 0ms;
+        opacity: 0.0;
+        visibility: hidden;
+    }
+}
+
 .tooltip {
     &.movement-description {
         margin-left: 1em;
@@ -12,6 +30,14 @@
 .movement-filters {
     > div.select {
         margin-right: 1em;
+    }
+}
+
+.movement-modals-buttons {
+    > div {
+        margin-left: 1em;
+        display: inline-block;
+        float: right;
     }
 }
 
