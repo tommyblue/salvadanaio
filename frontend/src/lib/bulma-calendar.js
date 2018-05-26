@@ -1,6 +1,7 @@
 /**
  * COPIED HERE FROM NODE_MODULES BECAUSE OF ERRORS DURING BUILD
  */
+// tslint:disable
 /*eslint no-undef: "off"*/
 /*eslint strict: "off"*/
 /*eslint eqeqeq: "off"*/
