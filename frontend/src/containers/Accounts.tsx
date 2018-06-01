@@ -9,8 +9,16 @@ import {
 } from '../actions';
 import AccountModal from '../components/AccountModal';
 import AccountsTable from '../components/AccountsTable';
+import {IGlobalState} from '../types';
 
-const mapStateToProps = (state: any) => {
+interface IProps extends IGlobalState{
+    loadAccounts: () => void;
+    onDeleteAccount: (accountId: any) => void;
+    onSaveAccount: (account: any) => void;
+    onToggleShowAccountsModal: () => void;
+}
+
+const mapStateToProps = (state: IGlobalState) => {
     return {
         accounts: state.accounts,
         showAccountsModal: state.showAccountsModal,
@@ -26,7 +34,7 @@ const mapDispatchToProps = (dispatch: any) => {
     }
 };
 
-class Accounts extends React.Component<any, any> {
+class Accounts extends React.Component<IProps, {}> {
     public componentDidMount() {
         this.props.loadAccounts();
     }

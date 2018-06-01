@@ -1,4 +1,5 @@
 import * as _ from 'lodash';
+import {FetchError} from 'node-fetch';
 
 import store from '../store';
 import { getAuthToken, signOut } from './auth';
@@ -41,7 +42,7 @@ export const sessionResource = (action: string, body: any) => {
       });
 }
 
-export const errorOnFetch = (error: any) => {
+export const errorOnFetch = (error: FetchError) => {
     return setNotification(error.message, 'danger')
 };
 
@@ -51,7 +52,7 @@ export const deleteResource = (url: string) => {
       });
 };
 
-const mergeAuthHeaders = (baseOptions: any) => {
+const mergeAuthHeaders = (baseOptions: RequestInit): RequestInit => {
     const options = _.isUndefined(baseOptions) ? {} : baseOptions;
     if (!_.has(options, 'headers')) {
         options.headers = {};
@@ -62,10 +63,9 @@ const mergeAuthHeaders = (baseOptions: any) => {
     };
     return options;
 }
-
-const authFetch = (url: string, options={}) => (
+const authFetch = (url: string, options: RequestInit={}): Promise<Response> => (
     fetch(url, mergeAuthHeaders(options)).then(
-        (response: any) => {
+        (response: Response): Response | any => {
             if (response.status === 401) {
                 store.dispatch(signOut());
                 throw new Error("Unauthorized");
@@ -78,6 +78,6 @@ const authFetch = (url: string, options={}) => (
                 return response;
             }
         },
-        (error: any) => error
+        (error: Response): Response => error
     )
 );

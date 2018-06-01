@@ -4,9 +4,9 @@ import * as React from 'react';
 import AccountForm from './AccountForm';
 
 interface IProps {
-    toggleShowModal: (e: any) => any;
-    showModal: boolean;
     onSaveAccount: (state: IState) => any;
+    showModal: boolean;
+    toggleShowModal: (e: any) => any;
 }
 
 interface IState {

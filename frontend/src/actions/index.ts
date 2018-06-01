@@ -29,8 +29,8 @@ import {
     saveMovement,
     TOGGLE_MOVEMENTS_MODAL,
     TOGGLE_UPLOAD_MOVEMENTS_MODAL,
-    toggleShowMovementsModal,
-    toggleShowUploadMovementsModal,
+    toggleMovementsModal,
+    toggleUploadMovementsModal,
     uploadMovements,
 } from './movements';
 import {
@@ -57,9 +57,9 @@ export {
     loadMovements,
     saveMovement,
     TOGGLE_MOVEMENTS_MODAL,
-    toggleShowMovementsModal,
-    toggleShowUploadMovementsModal,
     TOGGLE_UPLOAD_MOVEMENTS_MODAL,
+    toggleMovementsModal,
+    toggleUploadMovementsModal,
     uploadMovements,
 };
 export {LOADED_CATEGORY, loadCategories,};

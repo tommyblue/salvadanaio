@@ -1,8 +1,17 @@
 import * as _ from 'lodash';
 import * as React from 'react';
 
-export default class extends React.Component<any, any> {
-    public componentWillReceiveProps(nextProps: any) {
+import {IAccount} from '../types';
+
+interface IProps {
+    includeEmpty?: boolean;
+    accounts: IAccount[];
+    selectedAccount: string;
+    onSelectAccount: (target: string | number) => void;
+}
+
+export default class extends React.Component<IProps, {}> {
+    public componentWillReceiveProps(nextProps: IProps) {
         if (!this.props.includeEmpty && _.isEmpty(nextProps.selectedAccount) && nextProps.accounts.length > 0) {
             nextProps.onSelectAccount(nextProps.accounts[0].id);
         }
@@ -12,9 +21,16 @@ export default class extends React.Component<any, any> {
         const { accounts, selectedAccount, onSelectAccount } = this.props;
         return (
             <div className="select">
-                <select value={selectedAccount} onChange={(e) => (onSelectAccount(e.target.value))}>
+                <select
+                    value={selectedAccount}
+                    onChange={
+                        (e: React.ChangeEvent<HTMLSelectElement>) =>
+                            (onSelectAccount(e.target.value)
+                        )
+                    }
+                >
                     {this.includeEmpty()}
-                    {_.map(accounts, (a) => (
+                    {_.map(accounts, (a: IAccount) => (
                         <option key={a.id} value={a.id}>{a.name}</option>
                     ))}
                 </select>

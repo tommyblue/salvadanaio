@@ -3,7 +3,7 @@ import { Component } from 'react';
 import {
     HashRouter as Router,
     Route,
-    Switch
+    Switch,
 } from 'react-router-dom';
 
 import NavBar from './components/Navbar';
@@ -27,11 +27,7 @@ class App extends Component {
                         <Route path='/login' component={Login} />
                         <PrivateRoute>
                             <Route component={Movements} path='/movements' />
-                        </PrivateRoute>
-                        <PrivateRoute>
                             <Route component={Accounts} path='/accounts' />
-                        </PrivateRoute>
-                        <PrivateRoute>
                             <Route component={Dashboard} />
                         </PrivateRoute>
                     </Switch>

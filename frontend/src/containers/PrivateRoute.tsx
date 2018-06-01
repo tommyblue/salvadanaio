@@ -2,7 +2,9 @@ import * as React from 'react';
 import { connect } from 'react-redux';
 import { Redirect } from 'react-router-dom';
 
-const mapStateToProps = (state: any) => {
+import {IGlobalState} from '../types';
+
+const mapStateToProps = (state: IGlobalState) => {
     return {
         isAuthenticated: state.isAuthenticated,
     };
@@ -24,9 +26,7 @@ class PrivateRoute extends React.Component<IProps, any> {
             );
         }
 
-        return (
-            <span>{this.props.children}</span>
-        );
+        return this.props.children;
     }
 }
 

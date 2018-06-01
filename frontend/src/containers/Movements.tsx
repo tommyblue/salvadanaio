@@ -11,8 +11,8 @@ import {
     selectAccount,
     selectCategory,
     selectDateRange,
-    toggleShowMovementsModal,
-    toggleShowUploadMovementsModal,
+    toggleMovementsModal,
+    toggleUploadMovementsModal,
     uploadMovements,
 } from '../actions';
 import AccountSelector from '../components/AccountSelector';
@@ -21,8 +21,31 @@ import DateRangeSelector from '../components/DateRangeSelector';
 import MovementModal from '../components/MovementModal';
 import MovementsTable from '../components/MovementsTable';
 import UploadMovementsModal from '../components/UploadMovementsModal';
+import {IAccount, ICategory, IGlobalState, IMovement} from '../types';
 
-const mapStateToProps = (state: any) => {
+interface IProps {
+    accounts: IAccount[];
+    categories: ICategory[];
+    movements: IMovement[];
+    selectedAccount: string;
+    selectedCategory: string;
+    selectedDateRange: string,
+    showMovementsModal: boolean;
+    showUploadMovementsModal: boolean;
+    onDeleteMovement: (movementId: string) => void;
+    onLoadAccounts: () => void;
+    onLoadCategories: () => void;
+    onLoadMovements: (accountId: string, dateRange: string) => void;
+    onSaveMovement: (movement: IMovement) => void;
+    onSelectAccount: (accountId: string) => void;
+    onSelectCategory: (categoryId: string) => void;
+    onSelectDateRange: (dateRange: string) => void;
+    onUploadMovements: (accountId: string, file: any) => void;
+    toggleShowMovementsModal: () => void;
+    toggleShowUploadMovementsModal: () => void;
+}
+
+const mapStateToProps = (state: IGlobalState) => {
     return {
         accounts: state.accounts,
         categories: state.categories,
@@ -40,18 +63,20 @@ const mapDispatchToProps = (dispatch: any) => {
         onDeleteMovement: (movementId: string) => dispatch(deleteMovement(movementId)),
         onLoadAccounts: () => dispatch(loadAccounts()),
         onLoadCategories: () => dispatch(loadCategories()),
-        onLoadMovements: (params: any) => dispatch(loadMovements(params)),
-        onSaveMovement: (movement: any) => dispatch(saveMovement(movement)),
+        onLoadMovements: (accountId: string, dateRange: string) =>
+                         dispatch(loadMovements(accountId, dateRange)),
+        onSaveMovement: (movement: IMovement) => dispatch(saveMovement(movement)),
         onSelectAccount: (accountId: string) => dispatch(selectAccount(accountId)),
         onSelectCategory: (categoryId: string) => dispatch(selectCategory(categoryId)),
-        onSelectDateRange: (dateRange: any) => dispatch(selectDateRange(dateRange)),
-        onUploadMovements: (accountId: string, file: any) => dispatch(uploadMovements(accountId, file)),
-        toggleShowMovementsModal: () => dispatch(toggleShowMovementsModal()),
-        toggleShowUploadMovementsModal: () => dispatch(toggleShowUploadMovementsModal()),
+        onSelectDateRange: (dateRange: string) => dispatch(selectDateRange(dateRange)),
+        onUploadMovements: (accountId: string, file: any) =>
+                           dispatch(uploadMovements(accountId, file)),
+        toggleShowMovementsModal: () => dispatch(toggleMovementsModal()),
+        toggleShowUploadMovementsModal: () => dispatch(toggleUploadMovementsModal()),
     }
 };
-class Movements extends React.Component<any, any> {
-    constructor(props: any) {
+class Movements extends React.Component<IProps, {}> {
+    constructor(props: IProps) {
         super(props);
         this.selectAccount = this.selectAccount.bind(this);
     }
@@ -60,21 +85,21 @@ class Movements extends React.Component<any, any> {
         this.props.onLoadAccounts();
         this.props.onLoadCategories();
         if (this.props.selectedAccount) {
-            this.props.onLoadMovements({
-                accountId: this.props.selectedAccount,
-                dateRange: this.props.selectedDateRange,
-            });
+            this.props.onLoadMovements(
+                this.props.selectedAccount,
+                this.props.selectedDateRange,
+            );
         }
     }
 
-    public componentWillReceiveProps(nextProps: any) {
+    public componentWillReceiveProps(nextProps: IProps) {
         if (this.props.selectedAccount !== nextProps.selectedAccount
             || this.props.selectedDateRange !== nextProps.selectedDateRange
         ) {
-            this.props.onLoadMovements({
-                accountId: nextProps.selectedAccount,
-                dateRange: nextProps.selectedDateRange
-            });
+            this.props.onLoadMovements(
+                nextProps.selectedAccount,
+                nextProps.selectedDateRange
+            );
         }
     }
 
@@ -134,11 +159,13 @@ class Movements extends React.Component<any, any> {
         }
     }
 
-    private getFilteredMovements() {
+    private getFilteredMovements(): IMovement[] {
         if (!_.isNumber(this.props.selectedCategory)) {
             return this.props.movements;
         }
-        return _.filter(this.props.movements, (m) => (m.category_id === this.props.selectedCategory));
+        return _.filter(
+            this.props.movements, (m: IMovement) => (m.category_id === this.props.selectedCategory)
+        );
     }
 }
 
