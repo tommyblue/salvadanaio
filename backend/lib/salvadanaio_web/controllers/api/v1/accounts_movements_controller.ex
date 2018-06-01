@@ -25,9 +25,10 @@ defmodule SalvadanaioWeb.Api.V1.AccountsMovementsController do
 
   def upload(conn, %{"accounts_id" => account_id, "file" => file}) do
     case Salvadanaio.Import.Filter.get_importer(account_id) do
-      nil -> conn |> put_status(400) |> json(%{error: "what an error!"})
-      import_module -> import_module.run(file.path)
+      nil -> conn |> put_status(400) |> json(%{error: "Error parsing the uploaded file"})
+      import_module ->
+        movements = import_module.run(file.path, true)
+        render conn, "index.json", movements: movements
     end
-    conn |> send_resp(201, "")
   end
 end
